@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Gold Trading Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#08080c;--bg2:#141419;--card:#1a1a22;--input:#22222c;--gold:#ffd700;--gold2:#f0b90b;--gold-dim:rgba(255,215,0,.12);--gold-glow:rgba(255,215,0,.4);--green:#00e676;--green-dim:rgba(0,230,118,.15);--red:#ff5252;--red-dim:rgba(255,82,82,.15);--white:#fff;--gray:#9e9e9e;--dim:#616161;--border:#2a2a35;--blue:#4dabf7;--purple:#b388ff}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+        
+        /* Admin Login */
+        .admin-login{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+        .admin-login.hidden{display:none}
+        .login-box{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:48px;max-width:420px;width:100%;text-align:center;position:relative}
+        .login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--red),var(--gold),var(--red))}
+        .login-icon{font-size:64px;margin-bottom:20px}
+        .login-title{font-size:28px;font-weight:800;margin-bottom:8px}
+        .login-subtitle{color:var(--gray);font-size:14px;margin-bottom:32px}
+        .login-input{width:100%;background:var(--input);border:2px solid var(--border);border-radius:12px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--white);text-align:center;letter-spacing:2px;margin-bottom:16px}
+        .login-input:focus{outline:none;border-color:var(--gold)}
+        .login-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;color:#000;padding:16px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s}
+        .login-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px var(--gold-glow)}
+        .login-error{color:var(--red);font-size:13px;margin-top:12px;display:none}
+        .login-error.show{display:block}
+        
+        /* Main Layout */
+        .admin-main{display:none}
+        .admin-main.active{display:block}
+        
+        /* Header */
+        .admin-header{background:var(--card);border-bottom:1px solid var(--border);padding:20px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+        .admin-logo{display:flex;align-items:center;gap:14px}
+        .admin-logo-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--red),var(--gold));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+        .admin-logo-text{font-size:20px;font-weight:800}
+        .admin-logo-badge{background:var(--red);color:#fff;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-left:8px}
+        .admin-user{display:flex;align-items:center;gap:16px}
+        .admin-user-info{text-align:right}
+        .admin-user-name{font-size:14px;font-weight:600}
+        .admin-user-role{font-size:11px;color:var(--gold)}
+        .admin-logout{background:var(--red-dim);border:1px solid var(--red);color:var(--red);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .3s}
+        .admin-logout:hover{background:var(--red);color:#fff}
+        
+        /* Container */
+        .admin-container{max-width:1600px;margin:0 auto;padding:32px}
+        
+        /* Stats Cards */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:32px}
+        .stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;position:relative;overflow:hidden}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+        .stat-card.gold::before{background:var(--gold)}
+        .stat-card.green::before{background:var(--green)}
+        .stat-card.blue::before{background:var(--blue)}
+        .stat-card.purple::before{background:var(--purple)}
+        .stat-card.red::before{background:var(--red)}
+        .stat-icon{font-size:40px;margin-bottom:12px}
+        .stat-value{font-size:36px;font-weight:800;font-family:'JetBrains Mono',monospace;margin-bottom:4px}
+        .stat-label{font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
+        .stat-change{position:absolute;top:20px;right:20px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+        .stat-change.up{background:var(--green-dim);color:var(--green)}
+        .stat-change.down{background:var(--red-dim);color:var(--red)}
+        
+        /* Action Buttons */
+        .action-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:24px}
+        .action-left{display:flex;gap:12px;flex-wrap:wrap}
+        .action-right{display:flex;gap:12px;align-items:center}
+        
+        .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s;border:none}
+        .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
+        .btn-primary:hover{box-shadow:0 0 30px var(--gold-glow);transform:translateY(-2px)}
+        .btn-secondary{background:var(--bg2);border:1px solid var(--border);color:var(--white)}
+        .btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+        .btn-danger{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+        .btn-danger:hover{background:var(--red);color:#fff}
+        .btn-success{background:var(--green-dim);border:1px solid var(--green);color:var(--green)}
+        .btn-success:hover{background:var(--green);color:#000}
+        
+        .search-box{display:flex;align-items:center;gap:8px;background:var(--input);border:1px solid var(--border);border-radius:10px;padding:8px 16px}
+        .search-box input{background:none;border:none;color:var(--white);font-size:14px;width:200px}
+        .search-box input:focus{outline:none}
+        .search-box input::placeholder{color:var(--dim)}
+        
+        /* Table */
+        .table-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+        .table-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+        .table-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+        .table-count{background:var(--gold-dim);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+        
+        .table-wrap{overflow-x:auto}
+        table{width:100%;border-collapse:collapse;min-width:1200px}
+        th{background:var(--bg2);padding:14px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border)}
+        td{padding:16px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+        tr:hover td{background:var(--bg2)}
+        tr:last-child td{border-bottom:none}
+        
+        .user-cell{display:flex;align-items:center;gap:12px}
+        .user-avatar{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
+        .user-avatar.active{background:var(--green-dim);color:var(--green)}
+        .user-avatar.inactive{background:var(--red-dim);color:var(--red)}
+        .user-avatar.pending{background:var(--gold-dim);color:var(--gold)}
+        .user-info{display:flex;flex-direction:column;gap:2px}
+        .user-name{font-weight:600}
+        .user-email{font-size:12px;color:var(--gray)}
+        
+        .code-badge{font-family:'JetBrains Mono',monospace;background:var(--gold-dim);color:var(--gold);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:600}
+        
+        .lot-value{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px}
+        .lot-value.high{color:var(--green)}
+        .lot-value.medium{color:var(--gold)}
+        .lot-value.low{color:var(--red)}
+        
+        .status-badge{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+        .status-badge.active{background:var(--green-dim);color:var(--green)}
+        .status-badge.inactive{background:var(--red-dim);color:var(--red)}
+        .status-badge.pending{background:var(--gold-dim);color:var(--gold)}
+        
+        .action-btns{display:flex;gap:8px}
+        .action-btn{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;border:none;font-size:16px}
+        .action-btn.edit{background:var(--blue);background:rgba(77,171,247,.15);color:var(--blue)}
+        .action-btn.edit:hover{background:var(--blue);color:#fff}
+        .action-btn.toggle{background:var(--gold-dim);color:var(--gold)}
+        .action-btn.toggle:hover{background:var(--gold);color:#000}
+        .action-btn.delete{background:var(--red-dim);color:var(--red)}
+        .action-btn.delete:hover{background:var(--red);color:#fff}
+        
+        /* Modal */
+        .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+        .modal-overlay.show{display:flex}
+        .modal{background:var(--card);border:1px solid var(--border);border-radius:20px;max-width:550px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+        .modal-header{padding:24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:1}
+        .modal-title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px}
+        .modal-close{width:40px;height:40px;border-radius:10px;background:var(--bg2);border:none;color:var(--gray);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+        .modal-close:hover{background:var(--red-dim);color:var(--red)}
+        .modal-body{padding:24px}
+        .modal-footer{padding:20px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:12px}
+        
+        .form-group{margin-bottom:20px}
+        .form-label{display:block;font-size:13px;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+        .form-input{width:100%;background:var(--input);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-size:15px;color:var(--white);transition:all .3s}
+        .form-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim)}
+        .form-input::placeholder{color:var(--dim)}
+        select.form-input{cursor:pointer}
+        
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        
+        .generated-code{background:var(--gold-dim);border:2px dashed var(--gold);border-radius:12px;padding:20px;text-align:center;margin-top:16px}
+        .generated-code-label{font-size:12px;color:var(--gray);margin-bottom:8px}
+        .generated-code-value{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--gold);letter-spacing:3px}
+        .copy-btn{margin-top:12px;background:var(--gold);border:none;color:#000;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+        .copy-btn:hover{opacity:.9}
+        
+        /* Empty State */
+        .empty-state{text-align:center;padding:60px 20px}
+        .empty-icon{font-size:64px;margin-bottom:16px;opacity:.5}
+        .empty-title{font-size:20px;font-weight:700;margin-bottom:8px}
+        .empty-desc{color:var(--gray);font-size:14px}
+        
+        /* Responsive */
+        @media(max-width:768px){
+            .admin-header{padding:16px;flex-direction:column;gap:16px}
+            .admin-container{padding:16px}
+            .stats-grid{grid-template-columns:1fr 1fr}
+            .action-bar{flex-direction:column;align-items:stretch}
+            .action-left,.action-right{justify-content:center}
+            .search-box input{width:150px}
+            .form-row{grid-template-columns:1fr}
+            .modal{margin:20px}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ADMIN LOGIN -->
+<div class="admin-login" id="adminLogin">
+    <div class="login-box">
+        <div class="login-icon">🔐</div>
+        <h2 class="login-title">Admin Dashboard</h2>
+        <p class="login-subtitle">Gold Trading Hub Management System</p>
+        <input type="password" class="login-input" id="adminPassword" placeholder="รหัสผ่าน Admin">
+        <button class="login-btn" onclick="adminLogin()">🚀 เข้าสู่ระบบ</button>
+        <p class="login-error" id="loginError">❌ รหัสผ่านไม่ถูกต้อง</p>
+    </div>
+</div>
+
+<!-- ADMIN MAIN -->
+<div class="admin-main" id="adminMain">
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="admin-logo">
+            <div class="admin-logo-icon">👑</div>
+            <span class="admin-logo-text">Gold Trading Hub</span>
+            <span class="admin-logo-badge">ADMIN</span>
+        </div>
+        <div class="admin-user">
+            <div class="admin-user-info">
+                <div class="admin-user-name">Administrator</div>
+                <div class="admin-user-role">Super Admin</div>
+            </div>
+            <button class="admin-logout" onclick="adminLogout()">🚪 ออกจากระบบ</button>
+        </div>
+    </header>
+    
+    <div class="admin-container">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card gold">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value" id="totalUsers">0</div>
+                <div class="stat-label">สมาชิกทั้งหมด</div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value" id="activeUsers">0</div>
+                <div class="stat-label">เปิดใช้งาน</div>
+            </div>
+            <div class="stat-card red">
+                <div class="stat-icon">⏸️</div>
+                <div class="stat-value" id="inactiveUsers">0</div>
+                <div class="stat-label">ปิดใช้งาน / พัก</div>
+            </div>
+            <div class="stat-card blue">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="totalLots">0.00</div>
+                <div class="stat-label">Total Lots (รวมทั้งหมด)</div>
+            </div>
+            <div class="stat-card purple">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value" id="avgLots">0.00</div>
+                <div class="stat-label">Lots เฉลี่ย/คน</div>
+            </div>
+        </div>
+        
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <div class="action-left">
+                <button class="btn btn-primary" onclick="openAddModal()">➕ เพิ่มสมาชิกใหม่</button>
+                <button class="btn btn-secondary" onclick="exportData()">📤 Export CSV</button>
+                <button class="btn btn-secondary" onclick="importData()">📥 Import</button>
+            </div>
+            <div class="action-right">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" id="searchInput" placeholder="ค้นหาสมาชิก..." oninput="filterUsers()">
+                </div>
+                <select class="form-input" style="width:auto;padding:10px 16px" id="filterStatus" onchange="filterUsers()">
+                    <option value="all">ทั้งหมด</option>
+                    <option value="active">เปิดใช้งาน</option>
+                    <option value="inactive">ปิดใช้งาน</option>
+                    <option value="pending">รอดำเนินการ</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Table -->
+        <div class="table-card">
+            <div class="table-header">
+                <div class="table-title">
+                    <span>📋</span> รายชื่อสมาชิก
+                    <span class="table-count" id="tableCount">0 คน</span>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>สมาชิก</th>
+                            <th>เบอร์โทร</th>
+                            <th>Line ID</th>
+                            <th>Exness UID</th>
+                            <th>รหัสเข้าใช้งาน</th>
+                            <th>Lots เทรด</th>
+                            <th>สถานะ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="empty-state" id="emptyState" style="display:none">
+                <div class="empty-icon">📭</div>
+                <div class="empty-title">ไม่พบข้อมูล</div>
+                <div class="empty-desc">ยังไม่มีสมาชิก หรือไม่พบผลการค้นหา</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="userModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="modalTitle">➕ เพิ่มสมาชิกใหม่</div>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="editUserId">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">ชื่อ-นามสกุล *</label>
+                    <input type="text" class="form-input" id="userName" placeholder="สมชาย ใจดี">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">อีเมล *</label>
+                    <input type="email" class="form-input" id="userEmail" placeholder="example@email.com">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">เบอร์โทร *</label>
+                    <input type="tel" class="form-input" id="userPhone" placeholder="0812345678">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Line ID *</label>
+                    <input type="text" class="form-input" id="userLine" placeholder="@lineid">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Exness UID *</label>
+                    <input type="text" class="form-input" id="userExness" placeholder="12345678">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Lots ที่เทรด</label>
+                    <input type="number" class="form-input" id="userLots" placeholder="0.00" step="0.01" value="0">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">สถานะ</label>
+                <select class="form-input" id="userStatus">
+                    <option value="active">✅ เปิดใช้งาน</option>
+                    <option value="pending">⏳ รอดำเนินการ</option>
+                    <option value="inactive">⏸️ ปิดใช้งาน / พักไว้</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">รหัสเข้าใช้งาน</label>
+                <div style="display:flex;gap:10px">
+                    <input type="text" class="form-input" id="userCode" placeholder="จะสร้างอัตโนมัติ" style="flex:1;font-family:'JetBrains Mono',monospace;text-transform:uppercase">
+                    <button class="btn btn-secondary" onclick="generateCode()" style="white-space:nowrap">🎲 สร้างรหัส</button>
+                </div>
+            </div>
+            
+            <div class="generated-code" id="generatedCodeBox" style="display:none">
+                <div class="generated-code-label">รหัสเข้าใช้งาน (ส่งให้ลูกค้า)</div>
+                <div class="generated-code-value" id="generatedCodeValue">-</div>
+                <button class="copy-btn" onclick="copyCode()">📋 คัดลอก</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">หมายเหตุ</label>
+                <textarea class="form-input" id="userNotes" rows="3" placeholder="บันทึกเพิ่มเติม..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">ยกเลิก</button>
+            <button class="btn btn-primary" onclick="saveUser()">💾 บันทึก</button>
+        </div>
+    </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal" style="max-width:400px">
+        <div class="modal-header">
+            <div class="modal-title">⚠️ ยืนยันการลบ</div>
+            <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+        </div>
+        <div class="modal-body" style="text-align:center">
+            <p style="font-size:16px;margin-bottom:8px">คุณต้องการลบสมาชิก</p>
+            <p style="font-size:20px;font-weight:700;color:var(--gold)" id="deleteUserName">-</p>
+            <p style="color:var(--gray);font-size:14px;margin-top:16px">การดำเนินการนี้ไม่สามารถย้อนกลับได้</p>
+        </div>
+        <div class="modal-footer" style="justify-content:center">
+            <button class="btn btn-secondary" onclick="closeDeleteModal()">ยกเลิก</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">🗑️ ลบเลย</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============ CONFIG ============
+const ADMIN_PASSWORD = 'admin2026'; // เปลี่ยนรหัสตรงนี้
+const STORAGE_KEY = 'goldHub_admin_users';
+
+// ============ DATA ============
+let users = [];
+let deleteUserId = null;
+
+// ============ ADMIN AUTH ============
+function adminLogin() {
+    const password = document.getElementById('adminPassword').value;
+    if (password === ADMIN_PASSWORD) {
+        localStorage.setItem('goldHub_admin_logged', 'true');
+        document.getElementById('adminLogin').classList.add('hidden');
+        document.getElementById('adminMain').classList.add('active');
+        loadUsers();
+    } else {
+        document.getElementById('loginError').classList.add('show');
+        setTimeout(() => document.getElementById('loginError').classList.remove('show'), 3000);
+    }
+}
+
+function checkAdminAuth() {
+    if (localStorage.getItem('goldHub_admin_logged') === 'true') {
+        document.getElementById('adminLogin').classList.add('hidden');
+        document.getElementById('adminMain').classList.add('active');
+        loadUsers();
+    }
+}
+
+function adminLogout() {
+    if (confirm('ต้องการออกจากระบบ?')) {
+        localStorage.removeItem('goldHub_admin_logged');
+        location.reload();
+    }
+}
+
+document.getElementById('adminPassword').addEventListener('keypress', e => {
+    if (e.key === 'Enter') adminLogin();
+});
+
+// ============ DATA MANAGEMENT ============
+function loadUsers() {
+    users = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    renderUsers();
+    updateStats();
+}
+
+function saveUsers() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+    
+    // Also update valid codes in main app
+    const validCodes = users.filter(u => u.status === 'active').map(u => u.code);
+    localStorage.setItem('goldHub_valid_codes', JSON.stringify(validCodes));
+}
+
+function updateStats() {
+    const total = users.length;
+    const active = users.filter(u => u.status === 'active').length;
+    const inactive = users.filter(u => u.status !== 'active').length;
+    const totalLots = users.reduce((sum, u) => sum + (parseFloat(u.lots) || 0), 0);
+    const avgLots = total > 0 ? totalLots / total : 0;
+    
+    document.getElementById('totalUsers').textContent = total;
+    document.getElementById('activeUsers').textContent = active;
+    document.getElementById('inactiveUsers').textContent = inactive;
+    document.getElementById('totalLots').textContent = totalLots.toFixed(2);
+    document.getElementById('avgLots').textContent = avgLots.toFixed(2);
+}
+
+function renderUsers(filteredUsers = null) {
+    const data = filteredUsers || users;
+    const tbody = document.getElementById('usersTable');
+    const empty = document.getElementById('emptyState');
+    
+    document.getElementById('tableCount').textContent = data.length + ' คน';
+    
+    if (data.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+    
+    empty.style.display = 'none';
+    
+    tbody.innerHTML = data.map(user => {
+        const statusClass = user.status === 'active' ? 'active' : (user.status === 'pending' ? 'pending' : 'inactive');
+        const statusText = user.status === 'active' ? '✅ เปิดใช้งาน' : (user.status === 'pending' ? '⏳ รอดำเนินการ' : '⏸️ ปิดใช้งาน');
+        const avatarClass = statusClass;
+        const lots = parseFloat(user.lots) || 0;
+        const lotClass = lots >= 10 ? 'high' : (lots >= 1 ? 'medium' : 'low');
+        
+        return `
+            <tr>
+                <td>
+                    <div class="user-cell">
+                        <div class="user-avatar ${avatarClass}">${user.name.charAt(0)}</div>
+                        <div class="user-info">
+                            <div class="user-name">${user.name}</div>
+                            <div class="user-email">${user.email}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>${user.phone}</td>
+                <td>${user.line}</td>
+                <td><code style="background:var(--bg2);padding:4px 8px;border-radius:4px">${user.exness}</code></td>
+                <td><span class="code-badge">${user.code}</span></td>
+                <td><span class="lot-value ${lotClass}">${lots.toFixed(2)}</span></td>
+                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                <td>
+                    <div class="action-btns">
+                        <button class="action-btn edit" onclick="editUser('${user.id}')" title="แก้ไข">✏️</button>
+                        <button class="action-btn toggle" onclick="toggleUser('${user.id}')" title="เปิด/ปิด">⚡</button>
+                        <button class="action-btn delete" onclick="deleteUser('${user.id}')" title="ลบ">🗑️</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function filterUsers() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const status = document.getElementById('filterStatus').value;
+    
+    let filtered = users;
+    
+    if (search) {
+        filtered = filtered.filter(u => 
+            u.name.toLowerCase().includes(search) ||
+            u.email.toLowerCase().includes(search) ||
+            u.phone.includes(search) ||
+            u.line.toLowerCase().includes(search) ||
+            u.exness.includes(search) ||
+            u.code.toLowerCase().includes(search)
+        );
+    }
+    
+    if (status !== 'all') {
+        filtered = filtered.filter(u => u.status === status);
+    }
+    
+    renderUsers(filtered);
+}
+
+// ============ MODAL ============
+function openAddModal() {
+    document.getElementById('modalTitle').innerHTML = '➕ เพิ่มสมาชิกใหม่';
+    document.getElementById('editUserId').value = '';
+    document.getElementById('userName').value = '';
+    document.getElementById('userEmail').value = '';
+    document.getElementById('userPhone').value = '';
+    document.getElementById('userLine').value = '';
+    document.getElementById('userExness').value = '';
+    document.getElementById('userLots').value = '0';
+    document.getElementById('userStatus').value = 'pending';
+    document.getElementById('userCode').value = '';
+    document.getElementById('userNotes').value = '';
+    document.getElementById('generatedCodeBox').style.display = 'none';
+    document.getElementById('userModal').classList.add('show');
+}
+
+function editUser(id) {
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+    
+    document.getElementById('modalTitle').innerHTML = '✏️ แก้ไขสมาชิก';
+    document.getElementById('editUserId').value = id;
+    document.getElementById('userName').value = user.name;
+    document.getElementById('userEmail').value = user.email;
+    document.getElementById('userPhone').value = user.phone;
+    document.getElementById('userLine').value = user.line;
+    document.getElementById('userExness').value = user.exness;
+    document.getElementById('userLots').value = user.lots || 0;
+    document.getElementById('userStatus').value = user.status;
+    document.getElementById('userCode').value = user.code;
+    document.getElementById('userNotes').value = user.notes || '';
+    document.getElementById('generatedCodeBox').style.display = 'none';
+    document.getElementById('userModal').classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('userModal').classList.remove('show');
+}
+
+function generateCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = 'GH';
+    for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    
+    // Check if code exists
+    if (users.some(u => u.code === code)) {
+        generateCode(); // Regenerate
+        return;
+    }
+    
+    document.getElementById('userCode').value = code;
+    document.getElementById('generatedCodeValue').textContent = code;
+    document.getElementById('generatedCodeBox').style.display = 'block';
+}
+
+function copyCode() {
+    const code = document.getElementById('generatedCodeValue').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        alert('✅ คัดลอกรหัสแล้ว: ' + code);
+    });
+}
+
+function saveUser() {
+    const id = document.getElementById('editUserId').value;
+    const name = document.getElementById('userName').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+    const phone = document.getElementById('userPhone').value.trim();
+    const line = document.getElementById('userLine').value.trim();
+    const exness = document.getElementById('userExness').value.trim();
+    const lots = parseFloat(document.getElementById('userLots').value) || 0;
+    const status = document.getElementById('userStatus').value;
+    const code = document.getElementById('userCode').value.trim().toUpperCase();
+    const notes = document.getElementById('userNotes').value.trim();
+    
+    // Validation
+    if (!name || !email || !phone || !line || !exness || !code) {
+        alert('❌ กรุณากรอกข้อมูลให้ครบทุกช่องที่มี *');
+        return;
+    }
+    
+    // Check duplicate code
+    if (users.some(u => u.code === code && u.id !== id)) {
+        alert('❌ รหัสนี้มีคนใช้แล้ว กรุณาสร้างรหัสใหม่');
+        return;
+    }
+    
+    if (id) {
+        // Edit existing
+        const index = users.findIndex(u => u.id === id);
+        if (index !== -1) {
+            users[index] = { ...users[index], name, email, phone, line, exness, lots, status, code, notes, updatedAt: new Date().toISOString() };
+        }
+    } else {
+        // Add new
+        users.push({
+            id: 'user_' + Date.now(),
+            name, email, phone, line, exness, lots, status, code, notes,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        });
+    }
+    
+    saveUsers();
+    renderUsers();
+    updateStats();
+    closeModal();
+    alert('✅ บันทึกสำเร็จ!');
+}
+
+function toggleUser(id) {
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+    
+    const newStatus = user.status === 'active' ? 'inactive' : 'active';
+    const statusText = newStatus === 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน';
+    
+    if (confirm(`ต้องการ${statusText}สมาชิก "${user.name}"?`)) {
+        user.status = newStatus;
+        user.updatedAt = new Date().toISOString();
+        saveUsers();
+        renderUsers();
+        updateStats();
+    }
+}
+
+function deleteUser(id) {
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+    
+    deleteUserId = id;
+    document.getElementById('deleteUserName').textContent = user.name;
+    document.getElementById('deleteModal').classList.add('show');
+}
+
+function closeDeleteModal() {
+    deleteUserId = null;
+    document.getElementById('deleteModal').classList.remove('show');
+}
+
+function confirmDelete() {
+    if (deleteUserId) {
+        users = users.filter(u => u.id !== deleteUserId);
+        saveUsers();
+        renderUsers();
+        updateStats();
+        closeDeleteModal();
+        alert('✅ ลบสมาชิกแล้ว');
+    }
+}
+
+// ============ EXPORT/IMPORT ============
+function exportData() {
+    if (users.length === 0) {
+        alert('ไม่มีข้อมูลให้ Export');
+        return;
+    }
+    
+    // CSV format
+    const headers = ['ชื่อ', 'อีเมล', 'เบอร์โทร', 'Line ID', 'Exness UID', 'รหัสเข้าใช้', 'Lots', 'สถานะ', 'หมายเหตุ', 'สร้างเมื่อ'];
+    const rows = users.map(u => [
+        u.name, u.email, u.phone, u.line, u.exness, u.code, u.lots, u.status, u.notes || '', u.createdAt
+    ]);
+    
+    const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `goldhub-members-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function importData() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                if (Array.isArray(data)) {
+                    if (confirm(`พบ ${data.length} รายการ ต้องการนำเข้า?`)) {
+                        users = [...users, ...data];
+                        saveUsers();
+                        renderUsers();
+                        updateStats();
+                        alert('✅ นำเข้าสำเร็จ!');
+                    }
+                }
+            } catch (err) {
+                alert('❌ ไฟล์ไม่ถูกต้อง');
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+}
+
+// ============ INIT ============
+window.onload = function() {
+    checkAdminAuth();
+};
+</script>
+</body>
+</html>
