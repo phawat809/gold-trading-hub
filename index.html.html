@@ -26,6 +26,175 @@
         .widget-body{padding:24px}
         .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
         @media(max-width:1200px){.grid-2{grid-template-columns:1fr}}
+        
+        /* AI Analysis Styles */
+        .ai-analysis-card{background:var(--bg2);border-radius:16px;padding:20px}
+        .analysis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+        .analysis-date{color:var(--gray);font-size:14px}
+        .refresh-btn{background:var(--card);border:1px solid var(--border);color:var(--gold);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;transition:all .3s}
+        .refresh-btn:hover{background:var(--gold-dim);border-color:var(--gold)}
+        .analysis-signal{text-align:center;margin-bottom:24px}
+        .signal-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:30px;font-size:18px;font-weight:700}
+        .signal-badge.bullish{background:linear-gradient(135deg,rgba(0,230,118,0.2),rgba(0,230,118,0.1));color:#00e676;border:2px solid #00e676}
+        .signal-badge.bearish{background:linear-gradient(135deg,rgba(255,82,82,0.2),rgba(255,82,82,0.1));color:#ff5252;border:2px solid #ff5252}
+        .signal-badge.neutral{background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,215,0,0.1));color:#ffd700;border:2px solid #ffd700}
+        .signal-icon{font-size:24px}
+        .analysis-section{margin-bottom:20px}
+        .analysis-section h4{color:var(--gold);font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+        .analysis-section p{color:var(--gray);font-size:14px;line-height:1.7}
+        .levels-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+        @media(max-width:768px){.levels-grid{grid-template-columns:repeat(3,1fr)}}
+        .level-box{background:var(--card);border-radius:10px;padding:12px 8px;text-align:center}
+        .level-box.resistance{border-left:3px solid #ff5252}
+        .level-box.support{border-left:3px solid #00e676}
+        .level-box.pivot{border-left:3px solid #ffd700;background:var(--gold-dim)}
+        .level-label{display:block;font-size:10px;color:var(--dim);margin-bottom:4px}
+        .level-value{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--white)}
+        .strategy-box{background:var(--card);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+        .strategy-box.buy{border-left:4px solid #00e676}
+        .strategy-box.sell{border-left:4px solid #ff5252}
+        .strategy-label{font-weight:700;font-size:14px}
+        .strategy-value{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--gold)}
+        .strategy-detail{font-size:12px;color:var(--gray);width:100%}
+        .factors-list{list-style:none;padding:0}
+        .factors-list li{padding:8px 0;border-bottom:1px solid var(--border);color:var(--gray);font-size:13px}
+        .factors-list li:last-child{border-bottom:none}
+        .analysis-footer{margin-top:20px;padding-top:15px;border-top:1px solid var(--border)}
+        .disclaimer{font-size:11px;color:var(--dim)}
+        
+        /* Calendar Styles - Forex Factory Style */
+        .calendar-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+        .filter-btn{background:var(--card);border:1px solid var(--border);color:var(--gray);padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;transition:all .3s}
+        .filter-btn:hover,.filter-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+        .calendar-table{background:var(--bg2);border-radius:12px;overflow:hidden}
+        .calendar-header-row{display:grid;grid-template-columns:60px 60px 50px 1fr 60px 60px 70px;padding:12px 10px;background:var(--card);font-size:11px;color:var(--dim);text-transform:uppercase;font-weight:600;gap:5px}
+        @media(max-width:768px){.calendar-header-row,.calendar-row{grid-template-columns:50px 50px 40px 1fr;font-size:10px}.cal-col.actual,.cal-col.forecast,.cal-col.previous{display:none}}
+        .calendar-date-header{background:var(--gold-dim);color:var(--gold);padding:10px 14px;font-size:13px;font-weight:700}
+        .calendar-row{display:grid;grid-template-columns:60px 60px 50px 1fr 60px 60px 70px;padding:12px 10px;border-bottom:1px solid var(--border);font-size:13px;align-items:center;gap:5px;transition:all .2s}
+        .calendar-row:hover{background:var(--card)}
+        .calendar-row.high{border-left:3px solid #ff5252}
+        .calendar-row.medium{border-left:3px solid #ff9800}
+        .calendar-row.low{border-left:3px solid #4caf50}
+        .cal-col{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .cal-col.time{color:var(--gold);font-family:'JetBrains Mono',monospace;font-weight:600}
+        .cal-col.currency{display:flex;align-items:center;gap:4px;font-weight:600}
+        .currency-flag{font-size:14px}
+        .cal-col.event{color:var(--white);font-weight:500}
+        .cal-col.actual{color:var(--green);font-family:'JetBrains Mono',monospace}
+        .cal-col.forecast,.cal-col.previous{color:var(--gray);font-family:'JetBrains Mono',monospace;font-size:12px}
+        .impact-dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+        .impact-dot.high{background:#ff5252}
+        .impact-dot.medium{background:#ff9800}
+        .impact-dot.low{background:#4caf50}
+        .calendar-legend{display:flex;gap:16px;padding:14px;font-size:11px;color:var(--dim);flex-wrap:wrap;justify-content:center}
+        .calendar-legend span{display:flex;align-items:center;gap:6px}
+        .ff-link{display:block;text-align:center;padding:14px;background:var(--card);border-radius:10px;color:var(--gold);text-decoration:none;font-size:13px;font-weight:600;margin-top:12px;transition:all .3s}
+        .ff-link:hover{background:var(--gold-dim)}
+        
+        /* Gold Trading Tips Styles */
+        .tips-container{padding:20px}
+        .tip-card{background:var(--bg2);border-radius:16px;margin-bottom:20px;overflow:hidden;border:1px solid var(--border)}
+        .tip-header{display:flex;align-items:center;gap:14px;padding:18px 20px;background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(255,215,0,0.02));border-bottom:1px solid var(--border)}
+        .tip-icon{font-size:28px}
+        .tip-title{font-size:18px;font-weight:700;color:var(--white)}
+        .tip-content{padding:20px}
+        
+        /* Session Timeline */
+        .session-timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+        @media(max-width:900px){.session-timeline{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:500px){.session-timeline{grid-template-columns:1fr}}
+        .session{background:var(--card);border-radius:12px;padding:14px;text-align:center;border:2px solid var(--border);transition:all .3s}
+        .session.active{border-color:var(--green);background:rgba(0,230,118,0.08)}
+        .session-time{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold);font-weight:600;margin-bottom:6px}
+        .session-name{font-size:15px;font-weight:700;margin-bottom:4px}
+        .session-vol{font-size:11px;color:var(--gray);margin-bottom:6px}
+        .session-tip{font-size:12px;font-weight:600}
+        
+        /* Tip Highlight Box */
+        .tip-highlight{display:flex;gap:14px;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,215,0,0.05));border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:16px}
+        .highlight-icon{font-size:28px}
+        .highlight-text{font-size:14px;line-height:1.7;color:var(--gray)}
+        .highlight-text strong{color:var(--gold)}
+        
+        /* Time Grid */
+        .time-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        @media(max-width:768px){.time-grid{grid-template-columns:1fr}}
+        .time-box{background:var(--card);border-radius:12px;padding:16px}
+        .time-box.good{border-left:4px solid var(--green)}
+        .time-box.bad{border-left:4px solid var(--red)}
+        .time-label{font-size:14px;font-weight:700;margin-bottom:12px}
+        .time-list{list-style:none;padding:0;margin:0}
+        .time-list li{padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--gray);line-height:1.5}
+        .time-list li:last-child{border-bottom:none}
+        .time-list li strong{color:var(--white)}
+        
+        /* Fed Guide */
+        .fed-guide{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+        @media(max-width:768px){.fed-guide{grid-template-columns:1fr}}
+        .fed-scenario{background:var(--card);border-radius:12px;padding:16px}
+        .fed-scenario.bullish-gold{border-left:4px solid var(--green)}
+        .fed-scenario.bearish-gold{border-left:4px solid var(--red)}
+        .scenario-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+        .scenario-icon{font-size:24px}
+        .scenario-title{font-size:15px;font-weight:700}
+        .scenario-list{list-style:none;padding:0;margin:0}
+        .scenario-list li{padding:6px 0;font-size:13px;color:var(--gray);line-height:1.5}
+        .scenario-list li strong{color:var(--white)}
+        
+        /* Fed Important News */
+        .fed-important{background:var(--card);border-radius:12px;padding:16px}
+        .important-title{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:14px}
+        .news-impact-list{display:flex;flex-direction:column;gap:8px}
+        .news-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border-radius:8px;font-size:13px}
+        .news-item.extreme{border-left:3px solid #ff5252}
+        .news-item.high{border-left:3px solid #ff9800}
+        .news-item.medium{border-left:3px solid #ffd700}
+        .impact-level{font-size:11px}
+        
+        /* Money Management Rules */
+        .mm-rules{display:flex;flex-direction:column;gap:16px;margin-bottom:20px}
+        .mm-rule{display:flex;gap:16px;background:var(--card);border-radius:12px;padding:16px;align-items:flex-start}
+        .rule-number{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#000;flex-shrink:0}
+        .rule-content{flex:1}
+        .rule-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:6px}
+        .rule-desc{font-size:13px;color:var(--gray);line-height:1.6}
+        .rule-example{display:block;margin-top:6px;font-size:12px;color:var(--dim);font-style:italic}
+        
+        /* MM Calculator Example */
+        .mm-calculator{background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(255,215,0,0.02));border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:16px}
+        .calc-title{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:14px}
+        .calc-example{background:var(--card);border-radius:10px;padding:14px}
+        .calc-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--gray)}
+        .calc-row:last-of-type{border-bottom:none}
+        .calc-row.highlight{background:var(--gold-dim);margin:8px -14px -14px;padding:12px 14px;border-radius:0 0 10px 10px;color:var(--gold)}
+        .calc-formula{margin-top:12px;font-size:11px;color:var(--dim);text-align:center;font-style:italic}
+        
+        /* Quick Reference */
+        .quick-ref{background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:16px;padding:20px;text-align:center}
+        .ref-title{font-size:16px;font-weight:800;color:#000;margin-bottom:16px}
+        .ref-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+        @media(max-width:768px){.ref-grid{grid-template-columns:repeat(2,1fr)}}
+        .ref-item{background:rgba(0,0,0,0.2);border-radius:10px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px}
+        .ref-icon{font-size:20px}
+        .ref-item span:last-child{font-size:12px;color:rgba(255,255,255,0.9)}
+        .ref-item strong{color:#fff}
+        
+        /* Results Summary Styles */
+        .results-summary{background:var(--bg2);border-radius:12px;margin-bottom:16px;overflow:hidden;border:1px solid var(--border)}
+        .results-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,215,0,0.05));border-bottom:1px solid var(--border)}
+        .results-header span:first-child{font-weight:700;color:var(--gold);font-size:14px}
+        .results-update{font-size:11px;color:var(--dim)}
+        .results-table{padding:8px}
+        .result-row{display:grid;grid-template-columns:1fr 70px 70px 140px;gap:10px;padding:10px 12px;border-radius:8px;margin-bottom:6px;align-items:center;font-size:13px;background:var(--card)}
+        @media(max-width:768px){.result-row{grid-template-columns:1fr 60px 60px;font-size:11px}.result-impact{display:none}}
+        .result-row.positive{border-left:3px solid #00e676}
+        .result-row.negative{border-left:3px solid #ff5252}
+        .result-event{color:var(--white);font-weight:500}
+        .result-actual{font-family:'JetBrains Mono',monospace;font-weight:700;text-align:center}
+        .result-actual.positive{color:#00e676}
+        .result-actual.negative{color:#ff5252}
+        .result-forecast{font-family:'JetBrains Mono',monospace;color:var(--dim);text-align:center;font-size:12px}
+        .result-impact{font-size:11px;color:var(--gray);text-align:right}
         .pattern-section{margin-bottom:24px}
         .pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
         .pattern-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .3s}
@@ -284,7 +453,7 @@
                 </div>
                 <p class="unlock-error" id="unlockError">❌ รหัสไม่ถูกต้อง</p>
             </div>
-            <div class="contact-info">📱 ติดต่อขอรหัส: <a href="#">Line: @YourLineID</a></div>
+            <div class="contact-info">📱 ติดต่อขอรหัส: <a href="https://lin.ee/n1rfIs5" target="_blank">Line: @735kzotg</a></div>
         </div>
     </div>
 </div>
@@ -353,35 +522,302 @@
 
         <!-- ROW 2: NEWS + CALENDAR -->
         <div class="grid-2">
+            <!-- AI ANALYSIS -->
             <div class="widget-card">
                 <div class="widget-header">
-                    <span style="font-size:28px">📰</span>
-                    <span class="widget-title">ข่าวทองคำ</span>
-                    <span class="widget-badge">● LIVE</span>
+                    <span style="font-size:28px">🤖</span>
+                    <span class="widget-title">AI วิเคราะห์ทองคำ</span>
+                    <span class="widget-badge" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff">AI POWERED</span>
                 </div>
-                <div style="height:550px">
-                    <div class="tradingview-widget-container" style="height:100%">
-                        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-                        {"feedMode":"symbol","symbol":"OANDA:XAUUSD","isTransparent":true,"displayMode":"regular","width":"100%","height":"100%","colorTheme":"dark","locale":"th_TH"}
-                        </script>
+                <div class="ai-analysis-container" style="padding:20px;">
+                    <div class="ai-analysis-card">
+                        <div class="analysis-header">
+                            <span class="analysis-date" id="analysis-date">🗓️ วันนี้</span>
+                            <button class="refresh-btn" onclick="refreshAnalysis()">🔄 อัพเดต</button>
+                        </div>
+                        
+                        <div class="analysis-signal" id="analysis-signal">
+                            <div class="signal-badge bullish">
+                                <span class="signal-icon">📈</span>
+                                <span class="signal-text">แนวโน้ม BULLISH</span>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-content" id="analysis-content">
+                            <div class="analysis-section">
+                                <h4>📊 สรุปภาพรวม</h4>
+                                <p>ทองคำยังคงอยู่ในแนวโน้มขาขึ้น โดยได้รับแรงหนุนจากความกังวลเรื่องเงินเฟ้อและความไม่แน่นอนทางภูมิรัฐศาสตร์ นักลงทุนหันมาถือทองคำเป็น Safe Haven</p>
+                            </div>
+                            
+                            <div class="analysis-section">
+                                <h4>🎯 แนวรับ-แนวต้าน</h4>
+                                <div class="levels-grid">
+                                    <div class="level-box resistance">
+                                        <span class="level-label">แนวต้าน 2</span>
+                                        <span class="level-value">2,785</span>
+                                    </div>
+                                    <div class="level-box resistance">
+                                        <span class="level-label">แนวต้าน 1</span>
+                                        <span class="level-value">2,765</span>
+                                    </div>
+                                    <div class="level-box pivot">
+                                        <span class="level-label">Pivot</span>
+                                        <span class="level-value">2,750</span>
+                                    </div>
+                                    <div class="level-box support">
+                                        <span class="level-label">แนวรับ 1</span>
+                                        <span class="level-value">2,735</span>
+                                    </div>
+                                    <div class="level-box support">
+                                        <span class="level-label">แนวรับ 2</span>
+                                        <span class="level-value">2,715</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="analysis-section">
+                                <h4>💡 กลยุทธ์วันนี้</h4>
+                                <div class="strategy-box buy">
+                                    <span class="strategy-label">🟢 BUY ZONE</span>
+                                    <span class="strategy-value">2,735 - 2,740</span>
+                                    <span class="strategy-detail">SL: 2,725 | TP: 2,760, 2,780</span>
+                                </div>
+                                <div class="strategy-box sell">
+                                    <span class="strategy-label">🔴 SELL ZONE</span>
+                                    <span class="strategy-value">2,780 - 2,785</span>
+                                    <span class="strategy-detail">SL: 2,795 | TP: 2,760, 2,740</span>
+                                </div>
+                            </div>
+                            
+                            <div class="analysis-section">
+                                <h4>⚠️ ปัจจัยที่ต้องจับตา</h4>
+                                <ul class="factors-list">
+                                    <li>📌 ตัวเลขเงินเฟ้อ CPI สหรัฐฯ</li>
+                                    <li>📌 การประชุม Fed และทิศทางดอกเบี้ย</li>
+                                    <li>📌 ความตึงเครียดภูมิรัฐศาสตร์</li>
+                                    <li>📌 ค่าเงินดอลลาร์และ Bond Yield</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-footer">
+                            <span class="disclaimer">⚠️ การวิเคราะห์นี้เป็นความเห็นจาก AI ไม่ใช่คำแนะนำการลงทุน</span>
+                        </div>
                     </div>
                 </div>
             </div>
             
+            <!-- GOLD TRADING TIPS -->
             <div class="widget-card">
                 <div class="widget-header">
-                    <span style="font-size:28px">📅</span>
-                    <span class="widget-title">ปฏิทินเศรษฐกิจ USD</span>
-                    <span class="widget-badge">● LIVE</span>
+                    <span style="font-size:28px">🎓</span>
+                    <span class="widget-title">เคล็ดลับเทรดทองคำ</span>
+                    <span class="widget-badge" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff">PRO TIPS</span>
                 </div>
-                <div style="height:550px">
-                    <div class="tradingview-widget-container" style="height:100%">
-                        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
-                        {"colorTheme":"dark","isTransparent":true,"width":"100%","height":"100%","locale":"th_TH","importanceFilter":"0,1","countryFilter":"us"}
-                        </script>
+                <div class="tips-container">
+                    
+                    <!-- TIP 1: Trading Sessions -->
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">⏰</span>
+                            <h3 class="tip-title">ช่วงเวลาทองเคลื่อนไหวมากที่สุด</h3>
+                        </div>
+                        <div class="tip-content">
+                            <div class="session-timeline">
+                                <div class="session sydney">
+                                    <div class="session-time">04:00 - 13:00</div>
+                                    <div class="session-name">🇦🇺 Sydney</div>
+                                    <div class="session-vol">Volume: ต่ำ</div>
+                                    <div class="session-tip">❌ ไม่แนะนำเทรด</div>
+                                </div>
+                                <div class="session tokyo">
+                                    <div class="session-time">06:00 - 15:00</div>
+                                    <div class="session-name">🇯🇵 Tokyo</div>
+                                    <div class="session-vol">Volume: ปานกลาง</div>
+                                    <div class="session-tip">⚠️ ระวัง Spread กว้าง</div>
+                                </div>
+                                <div class="session london active">
+                                    <div class="session-time">14:00 - 23:00</div>
+                                    <div class="session-name">🇬🇧 London</div>
+                                    <div class="session-vol">Volume: สูงมาก</div>
+                                    <div class="session-tip">✅ แนะนำเทรด!</div>
+                                </div>
+                                <div class="session newyork active">
+                                    <div class="session-time">19:00 - 04:00</div>
+                                    <div class="session-name">🇺🇸 New York</div>
+                                    <div class="session-vol">Volume: สูงสุด</div>
+                                    <div class="session-tip">✅ แนะนำเทรด!</div>
+                                </div>
+                            </div>
+                            <div class="tip-highlight">
+                                <span class="highlight-icon">💡</span>
+                                <div class="highlight-text">
+                                    <strong>ช่วงทองคำเคลื่อนไหวมากที่สุด:</strong><br>
+                                    🔥 <strong>19:00 - 23:00 น.</strong> (London + NY Overlap)<br>
+                                    เป็นช่วงที่ Volume สูงสุด ราคาวิ่งเร็ว โอกาสทำกำไรมากที่สุด!
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <!-- TIP 2: Best Trading Hours -->
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🎯</span>
+                            <h3 class="tip-title">เวลาที่ควรเทรด vs ไม่ควรเทรด</h3>
+                        </div>
+                        <div class="tip-content">
+                            <div class="time-grid">
+                                <div class="time-box good">
+                                    <div class="time-label">✅ เวลาที่ดีที่สุด</div>
+                                    <ul class="time-list">
+                                        <li><strong>14:00 - 15:00</strong> - London Open (ทองมักวิ่งแรง)</li>
+                                        <li><strong>19:00 - 20:00</strong> - NY Open (ข่าว USD ออก)</li>
+                                        <li><strong>19:00 - 23:00</strong> - Overlap Zone (Volume สูงสุด)</li>
+                                        <li><strong>21:30</strong> - ช่วงข่าว US Economic Data</li>
+                                    </ul>
+                                </div>
+                                <div class="time-box bad">
+                                    <div class="time-label">❌ เวลาที่ควรหลีกเลี่ยง</div>
+                                    <ul class="time-list">
+                                        <li><strong>04:00 - 06:00</strong> - ตลาดเงียบ Spread กว้าง</li>
+                                        <li><strong>12:00 - 14:00</strong> - ช่วงพักเที่ยง Asia</li>
+                                        <li><strong>วันศุกร์หลัง 23:00</strong> - Volume ลดลงมาก</li>
+                                        <li><strong>วันหยุดธนาคาร US/UK</strong> - ตลาดไม่เคลื่อนไหว</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- TIP 3: How to Read Fed News -->
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">📰</span>
+                            <h3 class="tip-title">วิธีอ่านข่าว Fed และผลกระทบต่อทองคำ</h3>
+                        </div>
+                        <div class="tip-content">
+                            <div class="fed-guide">
+                                <div class="fed-scenario bullish-gold">
+                                    <div class="scenario-header">
+                                        <span class="scenario-icon">📈</span>
+                                        <span class="scenario-title">ทองขึ้น (Bullish Gold)</span>
+                                    </div>
+                                    <ul class="scenario-list">
+                                        <li>🔹 Fed ส่งสัญญาณ <strong>ลดดอกเบี้ย</strong> (Dovish)</li>
+                                        <li>🔹 ตัวเลขเงินเฟ้อ (CPI/PCE) <strong>ต่ำกว่าคาด</strong></li>
+                                        <li>🔹 ตัวเลขจ้างงาน (NFP) <strong>แย่กว่าคาด</strong></li>
+                                        <li>🔹 GDP <strong>ต่ำกว่าคาด</strong> (เศรษฐกิจชะลอ)</li>
+                                        <li>🔹 ความเสี่ยงภูมิรัฐศาสตร์ <strong>เพิ่มขึ้น</strong></li>
+                                        <li>🔹 ดอลลาร์ <strong>อ่อนค่า</strong></li>
+                                    </ul>
+                                </div>
+                                <div class="fed-scenario bearish-gold">
+                                    <div class="scenario-header">
+                                        <span class="scenario-icon">📉</span>
+                                        <span class="scenario-title">ทองลง (Bearish Gold)</span>
+                                    </div>
+                                    <ul class="scenario-list">
+                                        <li>🔸 Fed ส่งสัญญาณ <strong>ขึ้นดอกเบี้ย</strong> (Hawkish)</li>
+                                        <li>🔸 ตัวเลขเงินเฟ้อ (CPI/PCE) <strong>สูงกว่าคาด</strong></li>
+                                        <li>🔸 ตัวเลขจ้างงาน (NFP) <strong>ดีกว่าคาด</strong></li>
+                                        <li>🔸 GDP <strong>สูงกว่าคาด</strong> (เศรษฐกิจแข็งแกร่ง)</li>
+                                        <li>🔸 Bond Yield <strong>พุ่งสูงขึ้น</strong></li>
+                                        <li>🔸 ดอลลาร์ <strong>แข็งค่า</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="fed-important">
+                                <div class="important-title">⚠️ ข่าวสำคัญที่ต้องจับตา (เรียงตามผลกระทบ)</div>
+                                <div class="news-impact-list">
+                                    <div class="news-item extreme"><span class="impact-level">🔴🔴🔴</span> FOMC / Fed Interest Rate Decision</div>
+                                    <div class="news-item extreme"><span class="impact-level">🔴🔴🔴</span> Non-Farm Payrolls (NFP)</div>
+                                    <div class="news-item high"><span class="impact-level">🔴🔴</span> CPI / Core CPI (เงินเฟ้อ)</div>
+                                    <div class="news-item high"><span class="impact-level">🔴🔴</span> PCE Price Index</div>
+                                    <div class="news-item medium"><span class="impact-level">🟠</span> GDP, Unemployment Claims, ISM PMI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- TIP 4: Money Management -->
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">💰</span>
+                            <h3 class="tip-title">Money Management สำหรับเทรดทอง</h3>
+                        </div>
+                        <div class="tip-content">
+                            <div class="mm-rules">
+                                <div class="mm-rule">
+                                    <div class="rule-number">1</div>
+                                    <div class="rule-content">
+                                        <div class="rule-title">กฎ 1-2% Rule</div>
+                                        <div class="rule-desc">ไม่ Risk เกิน <strong>1-2%</strong> ของพอร์ตต่อออเดอร์<br>
+                                        <span class="rule-example">เช่น พอร์ต $1,000 → Risk ไม่เกิน $10-20 ต่อออเดอร์</span></div>
+                                    </div>
+                                </div>
+                                <div class="mm-rule">
+                                    <div class="rule-number">2</div>
+                                    <div class="rule-content">
+                                        <div class="rule-title">Risk:Reward อย่างน้อย 1:2</div>
+                                        <div class="rule-desc">ถ้า SL 20 pips → TP ต้องอย่างน้อย 40 pips<br>
+                                        <span class="rule-example">แพ้ 5 ครั้ง ชนะ 5 ครั้ง = ยังได้กำไร!</span></div>
+                                    </div>
+                                </div>
+                                <div class="mm-rule">
+                                    <div class="rule-number">3</div>
+                                    <div class="rule-content">
+                                        <div class="rule-title">ตั้ง Stop Loss ทุกครั้ง</div>
+                                        <div class="rule-desc">ทองวิ่งเร็วมาก <strong>ห้ามเทรดโดยไม่มี SL</strong><br>
+                                        <span class="rule-example">⚠️ ทองอาจวิ่ง 50-100 pips ใน 5 นาที!</span></div>
+                                    </div>
+                                </div>
+                                <div class="mm-rule">
+                                    <div class="rule-number">4</div>
+                                    <div class="rule-content">
+                                        <div class="rule-title">ไม่เทรดช่วงข่าวแรง (ถ้าไม่มั่นใจ)</div>
+                                        <div class="rule-desc">รอข่าวออก 5-15 นาที ให้ราคานิ่งก่อน<br>
+                                        <span class="rule-example">หลีกเลี่ยง Spike และ Spread กว้าง</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mm-calculator">
+                                <div class="calc-title">📊 ตัวอย่างการคำนวณ Lot Size</div>
+                                <div class="calc-example">
+                                    <div class="calc-row"><span>พอร์ต:</span><span>$1,000</span></div>
+                                    <div class="calc-row"><span>Risk 2%:</span><span>$20</span></div>
+                                    <div class="calc-row"><span>SL:</span><span>20 pips</span></div>
+                                    <div class="calc-row"><span>Pip Value (0.01 lot):</span><span>$0.10/pip</span></div>
+                                    <div class="calc-row highlight"><span>Lot Size:</span><span><strong>0.10 lot</strong></span></div>
+                                    <div class="calc-formula">สูตร: (Risk $) ÷ (SL pips × Pip Value) = Lot</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Reference -->
+                    <div class="quick-ref">
+                        <div class="ref-title">📋 สรุปสั้นๆ จำง่าย</div>
+                        <div class="ref-grid">
+                            <div class="ref-item">
+                                <span class="ref-icon">⏰</span>
+                                <span>เทรด <strong>19:00-23:00</strong></span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-icon">💰</span>
+                                <span>Risk <strong>≤2%</strong> ต่อออเดอร์</span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-icon">🎯</span>
+                                <span>RR อย่างน้อย <strong>1:2</strong></span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-icon">🛑</span>
+                                <span><strong>ตั้ง SL</strong> ทุกครั้ง</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
