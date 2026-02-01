@@ -364,7 +364,24 @@
         .risk strong{color:var(--red)}
         .footer{text-align:center;padding:40px 20px;color:var(--dim);font-size:14px}
         .footer a{color:var(--gold);text-decoration:none}
-        .user-badge{position:fixed;top:20px;right:20px;background:var(--green-dim);border:1px solid var(--green);color:var(--green);padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;z-index:100}
+        
+        /* Navigation Bar Styles */
+        .navbar{position:sticky;top:0;left:0;right:0;background:rgba(8,8,12,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:1000;padding:0 20px}
+        .navbar-container{max-width:1600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px}
+        .navbar-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--white)}
+        .navbar-brand-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+        .navbar-brand-text{font-size:16px;font-weight:700;background:linear-gradient(90deg,var(--gold),#fff);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .navbar-menu{display:flex;align-items:center;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;padding:8px 0}
+        .navbar-menu::-webkit-scrollbar{display:none}
+        .nav-link{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;color:var(--gray);text-decoration:none;white-space:nowrap;transition:all .3s;border:1px solid transparent}
+        .nav-link:hover{color:var(--white);background:var(--card);border-color:var(--border)}
+        .nav-link.active{color:var(--gold);background:var(--gold-dim);border-color:rgba(255,215,0,0.3)}
+        .nav-icon{font-size:16px}
+        .navbar-toggle{display:none;background:none;border:none;color:var(--white);font-size:24px;cursor:pointer;padding:8px}
+        @media(max-width:1100px){.navbar-menu{position:fixed;top:60px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);flex-direction:column;align-items:stretch;padding:12px;gap:4px;max-height:0;overflow:hidden;opacity:0;transition:all .3s}.navbar-menu.open{max-height:500px;opacity:1}.nav-link{justify-content:flex-start;padding:12px 16px}.navbar-toggle{display:block}}
+        @media(max-width:768px){.navbar-brand-text{display:none}.navbar-container{padding:0 10px}}
+        
+        .user-badge{position:fixed;top:70px;right:20px;background:var(--green-dim);border:1px solid var(--green);color:var(--green);padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;z-index:100}
         .logout-btn{background:none;border:none;color:var(--gray);cursor:pointer;font-size:12px;margin-left:10px;text-decoration:underline}
         .logout-btn:hover{color:var(--red)}
         .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px}
@@ -460,6 +477,24 @@
 
 <!-- MAIN CONTENT -->
 <div class="main-content" id="mainContent">
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-brand" onclick="scrollToTop(event)">
+                <div class="navbar-brand-icon">⚜️</div>
+                <span class="navbar-brand-text">Gold Trading Hub</span>
+            </a>
+            <button class="navbar-toggle" onclick="toggleNavMenu()" id="navToggle">☰</button>
+            <div class="navbar-menu" id="navMenu">
+                <a href="#charts" class="nav-link" onclick="smoothScroll(event, 'charts')"><span class="nav-icon">📊</span> กราฟ</a>
+                <a href="#analysis" class="nav-link" onclick="smoothScroll(event, 'analysis')"><span class="nav-icon">🤖</span> AI วิเคราะห์</a>
+                <a href="#tips" class="nav-link" onclick="smoothScroll(event, 'tips')"><span class="nav-icon">🎓</span> เคล็ดลับ</a>
+                <a href="#patterns" class="nav-link" onclick="smoothScroll(event, 'patterns')"><span class="nav-icon">📈</span> กราฟแพทเทิร์น</a>
+                <a href="#calculator" class="nav-link" onclick="smoothScroll(event, 'calculator')"><span class="nav-icon">🧮</span> เครื่องมือคำนวณ/จดบันทึก</a>
+            </div>
+        </div>
+    </nav>
+    
     <div class="user-badge">
         <span>✅ <span id="displayCode"></span></span>
         <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
@@ -486,7 +521,7 @@
         </div>
 
         <!-- ROW 1: CHART + TECHNICAL -->
-        <div class="grid-2">
+        <div class="grid-2" id="charts">
             <div class="widget-card">
                 <div class="widget-header">
                     <span style="font-size:28px">📊</span>
@@ -523,7 +558,7 @@
         <!-- ROW 2: NEWS + CALENDAR -->
         <div class="grid-2">
             <!-- AI ANALYSIS -->
-            <div class="widget-card">
+            <div class="widget-card" id="analysis">
                 <div class="widget-header">
                     <span style="font-size:28px">🤖</span>
                     <span class="widget-title">AI วิเคราะห์ทองคำ</span>
@@ -608,7 +643,7 @@
             </div>
             
             <!-- GOLD TRADING TIPS -->
-            <div class="widget-card">
+            <div class="widget-card" id="tips">
                 <div class="widget-header">
                     <span style="font-size:28px">🎓</span>
                     <span class="widget-title">เคล็ดลับเทรดทองคำ</span>
@@ -823,7 +858,7 @@
         </div>
 
         <!-- CHART PATTERNS EDUCATION -->
-        <div class="widget-card pattern-section">
+        <div class="widget-card pattern-section" id="patterns">
             <div class="widget-header">
                 <span style="font-size:28px">📚</span>
                 <span class="widget-title">เจอแบบนี้ เทรดอย่างไร? (Chart Pattern Guide)</span>
@@ -1096,7 +1131,7 @@
         </div>
 
         <!-- TABS -->
-        <nav class="tabs">
+        <nav class="tabs" id="calculator">
             <button class="tab active" onclick="showSection('position')"><span>📐</span> Position Size</button>
             <button class="tab" onclick="showSection('risk')"><span>⚖️</span> Risk/Reward</button>
             <button class="tab" onclick="showSection('compound')"><span>📈</span> Compound</button>
@@ -1242,6 +1277,72 @@
 </div>
 
 <script>
+// ============ NAVIGATION ============
+function toggleNavMenu() {
+    const menu = document.getElementById('navMenu');
+    const toggle = document.getElementById('navToggle');
+    menu.classList.toggle('open');
+    toggle.textContent = menu.classList.contains('open') ? '✕' : '☰';
+}
+
+function smoothScroll(event, targetId) {
+    event.preventDefault();
+    const target = document.getElementById(targetId);
+    if (target) {
+        const navHeight = document.getElementById('navbar').offsetHeight;
+        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 10;
+        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        
+        // Close mobile menu
+        const menu = document.getElementById('navMenu');
+        const toggle = document.getElementById('navToggle');
+        menu.classList.remove('open');
+        toggle.textContent = '☰';
+        
+        // Update active state
+        updateActiveNav(targetId);
+    }
+}
+
+function scrollToTop(event) {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const menu = document.getElementById('navMenu');
+    const toggle = document.getElementById('navToggle');
+    menu.classList.remove('open');
+    toggle.textContent = '☰';
+}
+
+function updateActiveNav(activeId) {
+    document.querySelectorAll('.nav-link').forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + activeId) {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Auto-update active nav on scroll
+window.addEventListener('scroll', function() {
+    const sections = ['charts', 'analysis', 'tips', 'patterns', 'calculator'];
+    const navHeight = document.getElementById('navbar') ? document.getElementById('navbar').offsetHeight : 60;
+    
+    let current = '';
+    sections.forEach(function(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            const sectionTop = section.offsetTop - navHeight - 100;
+            if (window.pageYOffset >= sectionTop) {
+                current = sectionId;
+            }
+        }
+    });
+    
+    if (current) {
+        updateActiveNav(current);
+    }
+});
+
 // ============ CONFIG ============
 const SESSION_CHECK_INTERVAL = 3000;
 let currentUserCode = null;
