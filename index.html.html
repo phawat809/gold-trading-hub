@@ -62,6 +62,40 @@
         .analysis-footer{margin-top:20px;padding-top:15px;border-top:1px solid var(--border)}
         .disclaimer{font-size:11px;color:var(--dim)}
         
+        /* Current Price Box */
+        .current-price-box{background:linear-gradient(135deg,var(--bg),var(--card));border:2px solid var(--gold);border-radius:16px;padding:20px;text-align:center;margin-bottom:20px;position:relative;overflow:hidden}
+        .current-price-box::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(255,215,0,0.1),transparent);pointer-events:none}
+        .price-label{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+        .price-value{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;color:var(--gold);text-shadow:0 0 20px var(--gold-glow)}
+        .price-change{font-size:14px;font-weight:600;margin-top:8px}
+        .price-change.up{color:var(--green)}
+        .price-change.down{color:var(--red)}
+        .price-updated{font-size:11px;color:var(--dim);margin-top:8px}
+        
+        /* AI Daily Outlook Widget */
+        .ai-outlook-widget{background:var(--card);border:2px solid var(--border);border-radius:20px;margin-bottom:30px;overflow:hidden;transition:all .3s}
+        .ai-outlook-widget.bullish{border-color:var(--green);background:linear-gradient(135deg,rgba(0,230,118,0.08),var(--card))}
+        .ai-outlook-widget.bearish{border-color:var(--red);background:linear-gradient(135deg,rgba(255,82,82,0.08),var(--card))}
+        .ai-outlook-widget.neutral{border-color:var(--gold);background:linear-gradient(135deg,rgba(255,215,0,0.08),var(--card))}
+        .ai-outlook-header{display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+        .ai-outlook-icon{width:48px;height:48px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+        .ai-outlook-title{flex:1;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+        .ai-outlook-title span:first-child{font-size:20px;font-weight:700}
+        .ai-outlook-badge{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:5px 12px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+        .ai-outlook-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+        .ai-notify-btn{display:flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;transition:all .3s}
+        .ai-notify-btn:hover{background:var(--gold);color:#000}
+        .ai-outlook-time{font-size:11px;color:var(--dim)}
+        .ai-outlook-body{padding:20px 24px}
+        .ai-outlook-sentiment{display:inline-flex;align-items:center;gap:10px;padding:10px 20px;border-radius:30px;font-size:16px;font-weight:700;margin-bottom:16px}
+        .ai-outlook-widget.bullish .ai-outlook-sentiment{background:var(--green-dim);color:var(--green)}
+        .ai-outlook-widget.bearish .ai-outlook-sentiment{background:var(--red-dim);color:var(--red)}
+        .ai-outlook-widget.neutral .ai-outlook-sentiment{background:var(--gold-dim);color:var(--gold)}
+        .sentiment-icon{font-size:20px}
+        .ai-outlook-content{font-size:15px;line-height:1.8;color:var(--gray);white-space:pre-line}
+        .ai-outlook-content strong{color:var(--white)}
+        @media(max-width:768px){.ai-outlook-header{padding:14px 18px}.ai-outlook-body{padding:16px 18px}.ai-outlook-title span:first-child{font-size:17px}.ai-outlook-actions{width:100%;justify-content:space-between}}
+        
         /* Calendar Styles - Forex Factory Style */
         .calendar-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
         .filter-btn{background:var(--card);border:1px solid var(--border);color:var(--gray);padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;transition:all .3s}
@@ -486,8 +520,9 @@
             </a>
             <button class="navbar-toggle" onclick="toggleNavMenu()" id="navToggle">☰</button>
             <div class="navbar-menu" id="navMenu">
+                <a href="#aiOutlookWidget" class="nav-link" onclick="smoothScroll(event, 'aiOutlookWidget')"><span class="nav-icon">🤖</span> AI Outlook</a>
                 <a href="#charts" class="nav-link" onclick="smoothScroll(event, 'charts')"><span class="nav-icon">📊</span> กราฟ</a>
-                <a href="#analysis" class="nav-link" onclick="smoothScroll(event, 'analysis')"><span class="nav-icon">🤖</span> AI วิเคราะห์</a>
+                <a href="#analysis" class="nav-link" onclick="smoothScroll(event, 'analysis')"><span class="nav-icon">📰</span> ข่าว</a>
                 <a href="#tips" class="nav-link" onclick="smoothScroll(event, 'tips')"><span class="nav-icon">🎓</span> เคล็ดลับ</a>
                 <a href="#patterns" class="nav-link" onclick="smoothScroll(event, 'patterns')"><span class="nav-icon">📈</span> กราฟแพทเทิร์น</a>
                 <a href="#calculator" class="nav-link" onclick="smoothScroll(event, 'calculator')"><span class="nav-icon">🧮</span> เครื่องมือคำนวณ/จดบันทึก</a>
@@ -517,6 +552,30 @@
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
                 {"symbols":[{"proName":"OANDA:XAUUSD","title":"Gold"},{"proName":"OANDA:XAGUSD","title":"Silver"},{"proName":"FX_IDC:USDTHB","title":"USD/THB"},{"proName":"FOREXCOM:DXY","title":"DXY"}],"showSymbolLogo":true,"colorTheme":"dark","isTransparent":false,"displayMode":"adaptive","locale":"th_TH"}
                 </script>
+            </div>
+        </div>
+
+        <!-- 🤖 AI DAILY OUTLOOK -->
+        <div class="ai-outlook-widget" id="aiOutlookWidget">
+            <div class="ai-outlook-header">
+                <div class="ai-outlook-icon">🤖</div>
+                <div class="ai-outlook-title">
+                    <span>AI Daily Outlook</span>
+                    <span class="ai-outlook-badge">TECH-IB</span>
+                </div>
+                <div class="ai-outlook-actions">
+                    <a href="#" class="ai-notify-btn" id="notifyBtn">🔔 รับแจ้งเตือน Real-time</a>
+                    <span class="ai-outlook-time" id="outlookTime">-</span>
+                </div>
+            </div>
+            <div class="ai-outlook-body">
+                <div class="ai-outlook-sentiment" id="outlookSentiment">
+                    <span class="sentiment-icon">⏳</span>
+                    <span class="sentiment-text">กำลังโหลด...</span>
+                </div>
+                <div class="ai-outlook-content" id="outlookContent">
+                    <p>กำลังโหลดบทวิเคราะห์...</p>
+                </div>
             </div>
         </div>
 
@@ -557,87 +616,29 @@
 
         <!-- ROW 2: NEWS + CALENDAR -->
         <div class="grid-2">
-            <!-- AI ANALYSIS -->
+            <!-- GOLD NEWS -->
             <div class="widget-card" id="analysis">
                 <div class="widget-header">
-                    <span style="font-size:28px">🤖</span>
-                    <span class="widget-title">AI วิเคราะห์ทองคำ</span>
-                    <span class="widget-badge" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff">AI POWERED</span>
+                    <span style="font-size:28px">📰</span>
+                    <span class="widget-title">ข่าวทองคำ Live</span>
+                    <span class="widget-badge">● LIVE</span>
                 </div>
-                <div class="ai-analysis-container" style="padding:20px;">
-                    <div class="ai-analysis-card">
-                        <div class="analysis-header">
-                            <span class="analysis-date" id="analysis-date">🗓️ วันนี้</span>
-                            <button class="refresh-btn" onclick="refreshAnalysis()">🔄 อัพเดต</button>
-                        </div>
-                        
-                        <div class="analysis-signal" id="analysis-signal">
-                            <div class="signal-badge bullish">
-                                <span class="signal-icon">📈</span>
-                                <span class="signal-text">แนวโน้ม BULLISH</span>
-                            </div>
-                        </div>
-                        
-                        <div class="analysis-content" id="analysis-content">
-                            <div class="analysis-section">
-                                <h4>📊 สรุปภาพรวม</h4>
-                                <p>ทองคำยังคงอยู่ในแนวโน้มขาขึ้น โดยได้รับแรงหนุนจากความกังวลเรื่องเงินเฟ้อและความไม่แน่นอนทางภูมิรัฐศาสตร์ นักลงทุนหันมาถือทองคำเป็น Safe Haven</p>
-                            </div>
-                            
-                            <div class="analysis-section">
-                                <h4>🎯 แนวรับ-แนวต้าน</h4>
-                                <div class="levels-grid">
-                                    <div class="level-box resistance">
-                                        <span class="level-label">แนวต้าน 2</span>
-                                        <span class="level-value">2,785</span>
-                                    </div>
-                                    <div class="level-box resistance">
-                                        <span class="level-label">แนวต้าน 1</span>
-                                        <span class="level-value">2,765</span>
-                                    </div>
-                                    <div class="level-box pivot">
-                                        <span class="level-label">Pivot</span>
-                                        <span class="level-value">2,750</span>
-                                    </div>
-                                    <div class="level-box support">
-                                        <span class="level-label">แนวรับ 1</span>
-                                        <span class="level-value">2,735</span>
-                                    </div>
-                                    <div class="level-box support">
-                                        <span class="level-label">แนวรับ 2</span>
-                                        <span class="level-value">2,715</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="analysis-section">
-                                <h4>💡 กลยุทธ์วันนี้</h4>
-                                <div class="strategy-box buy">
-                                    <span class="strategy-label">🟢 BUY ZONE</span>
-                                    <span class="strategy-value">2,735 - 2,740</span>
-                                    <span class="strategy-detail">SL: 2,725 | TP: 2,760, 2,780</span>
-                                </div>
-                                <div class="strategy-box sell">
-                                    <span class="strategy-label">🔴 SELL ZONE</span>
-                                    <span class="strategy-value">2,780 - 2,785</span>
-                                    <span class="strategy-detail">SL: 2,795 | TP: 2,760, 2,740</span>
-                                </div>
-                            </div>
-                            
-                            <div class="analysis-section">
-                                <h4>⚠️ ปัจจัยที่ต้องจับตา</h4>
-                                <ul class="factors-list">
-                                    <li>📌 ตัวเลขเงินเฟ้อ CPI สหรัฐฯ</li>
-                                    <li>📌 การประชุม Fed และทิศทางดอกเบี้ย</li>
-                                    <li>📌 ความตึงเครียดภูมิรัฐศาสตร์</li>
-                                    <li>📌 ค่าเงินดอลลาร์และ Bond Yield</li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <div class="analysis-footer">
-                            <span class="disclaimer">⚠️ การวิเคราะห์นี้เป็นความเห็นจาก AI ไม่ใช่คำแนะนำการลงทุน</span>
-                        </div>
+                <div style="height:600px">
+                    <!-- TradingView Timeline Widget -->
+                    <div class="tradingview-widget-container" style="height:100%">
+                        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+                        {
+                            "feedMode": "symbol",
+                            "symbol": "OANDA:XAUUSD",
+                            "isTransparent": true,
+                            "displayMode": "regular",
+                            "width": "100%",
+                            "height": "100%",
+                            "colorTheme": "dark",
+                            "locale": "th_TH"
+                        }
+                        </script>
                     </div>
                 </div>
             </div>
@@ -1324,7 +1325,7 @@ function updateActiveNav(activeId) {
 
 // Auto-update active nav on scroll
 window.addEventListener('scroll', function() {
-    const sections = ['charts', 'analysis', 'tips', 'patterns', 'calculator'];
+    const sections = ['aiOutlookWidget', 'charts', 'analysis', 'tips', 'patterns', 'calculator'];
     const navHeight = document.getElementById('navbar') ? document.getElementById('navbar').offsetHeight : 60;
     
     let current = '';
@@ -1345,11 +1346,228 @@ window.addEventListener('scroll', function() {
 
 // ============ CONFIG ============
 const SESSION_CHECK_INTERVAL = 3000;
+const GOLD_PRICE_UPDATE_INTERVAL = 3600000; // อัพเดททุก 1 ชั่วโมง (3600000ms)
+
+// ============ SUPABASE CONFIG (User Dashboard) ============
+// ⚠️ แก้ไขค่านี้ให้ตรงกับ Supabase Project ของคุณ (ค่าเดียวกับ Admin)
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+let supabaseClient = null;
 let currentUserCode = null;
 let sessionId = null;
 let pendingCode = null;
 let sessionCheckTimer = null;
 let journalEntries = [];
+let goldPriceTimer = null;
+let lastGoldPrice = null;
+
+// ============ GOLD PRICE API ============
+async function fetchGoldPrice() {
+    // ใช้ TradingView Widget Data ผ่าน proxy หรือ fallback เป็นราคาโดยประมาณ
+    try {
+        // ลองใช้ frankfurter API (เสถียร)
+        const response = await fetch('https://api.frankfurter.app/latest?from=XAU&to=USD');
+        const data = await response.json();
+        if (data && data.rates && data.rates.USD) {
+            // Frankfurter ให้ราคาเป็น 1 XAU = X USD
+            return {
+                price: data.rates.USD,
+                timestamp: new Date().toISOString()
+            };
+        }
+    } catch (error) {
+        console.log('Frankfurter API failed, trying backup...');
+    }
+    
+    // Backup: ใช้ Exchange Rate API
+    try {
+        const response = await fetch('https://open.er-api.com/v6/latest/XAU');
+        const data = await response.json();
+        if (data && data.rates && data.rates.USD) {
+            return {
+                price: data.rates.USD,
+                timestamp: new Date().toISOString()
+            };
+        }
+    } catch (error) {
+        console.log('Exchange Rate API also failed');
+    }
+    
+    // Final fallback: ใช้ราคาประมาณการจาก market (อัพเดทเมื่อ deploy)
+    // ราคาทองปัจจุบันประมาณ $4,650+ (Feb 2026)
+    const basePrice = 4650;
+    const variation = (Math.random() - 0.5) * 30; // +/- $15
+    return {
+        price: basePrice + variation,
+        timestamp: new Date().toISOString(),
+        isEstimate: true
+    };
+}
+
+function formatPrice(price) {
+    return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function calculateLevels(price) {
+    // คำนวณ Pivot Points แบบ Standard
+    // สำหรับทองคำราคา $4,650+ ใช้ range ประมาณ 25-30 pips
+    const range = 25;
+    
+    const pivot = Math.round(price);
+    const r1 = Math.round(price + range);
+    const r2 = Math.round(price + (range * 2));
+    const s1 = Math.round(price - range);
+    const s2 = Math.round(price - (range * 2));
+    
+    return { pivot, r1, r2, s1, s2 };
+}
+
+function determineSignal(price, lastPrice) {
+    // วิเคราะห์แนวโน้มจากราคา
+    const priceLevel = price;
+    
+    // ถ้ามีราคาก่อนหน้า เปรียบเทียบ
+    if (lastPrice) {
+        const change = price - lastPrice;
+        const changePercent = (change / lastPrice) * 100;
+        
+        if (changePercent > 0.1) {
+            return { signal: 'bullish', icon: '📈', text: 'แนวโน้ม BULLISH', class: 'bullish' };
+        } else if (changePercent < -0.1) {
+            return { signal: 'bearish', icon: '📉', text: 'แนวโน้ม BEARISH', class: 'bearish' };
+        }
+    }
+    
+    return { signal: 'neutral', icon: '➡️', text: 'แนวโน้ม SIDEWAYS', class: 'neutral' };
+}
+
+function generateSummary(price, signal) {
+    const summaries = {
+        bullish: `ทองคำเคลื่อนไหวในแนวโน้มขาขึ้น ราคาปัจจุบันอยู่ที่ $${formatPrice(price)} แนะนำรอจังหวะ Buy ที่แนวรับ พร้อมวาง Stop Loss ใต้แนวรับ 10-15 pips`,
+        bearish: `ทองคำเคลื่อนไหวในแนวโน้มขาลง ราคาปัจจุบันอยู่ที่ $${formatPrice(price)} แนะนำรอจังหวะ Sell ที่แนวต้าน พร้อมวาง Stop Loss เหนือแนวต้าน 10-15 pips`,
+        neutral: `ทองคำเคลื่อนไหว Sideways ราคาปัจจุบันอยู่ที่ $${formatPrice(price)} แนะนำรอให้ราคา Breakout ก่อนเข้าเทรด หรือเทรดในกรอบแนวรับ-แนวต้าน`
+    };
+    return summaries[signal] || summaries.neutral;
+}
+
+async function refreshGoldAnalysis() {
+    const btn = document.querySelector('.refresh-btn');
+    if (btn) {
+        btn.textContent = '⏳ กำลังโหลด...';
+        btn.disabled = true;
+    }
+    
+    const priceData = await fetchGoldPrice();
+    
+    if (priceData) {
+        const price = priceData.price;
+        const levels = calculateLevels(price);
+        const signalData = determineSignal(price, lastGoldPrice);
+        
+        // อัพเดทราคาปัจจุบัน
+        const priceText = '$' + formatPrice(price) + (priceData.isEstimate ? '*' : '');
+        document.getElementById('current-gold-price').textContent = priceText;
+        
+        // อัพเดท price change
+        const priceChangeEl = document.getElementById('price-change');
+        if (lastGoldPrice && !priceData.isEstimate) {
+            const change = price - lastGoldPrice;
+            const changePercent = ((change / lastGoldPrice) * 100).toFixed(2);
+            const changeText = change >= 0 ? `+$${formatPrice(change)} (+${changePercent}%)` : `-$${formatPrice(Math.abs(change))} (${changePercent}%)`;
+            priceChangeEl.textContent = changeText;
+            priceChangeEl.className = 'price-change ' + (change >= 0 ? 'up' : 'down');
+        } else if (priceData.isEstimate) {
+            priceChangeEl.textContent = '*ราคาประมาณการ - กดอัพเดทเพื่อรับราคาล่าสุด';
+            priceChangeEl.className = 'price-change';
+        } else {
+            priceChangeEl.textContent = 'ราคา ณ ขณะนี้';
+            priceChangeEl.className = 'price-change';
+        }
+        
+        // อัพเดทเวลา
+        const now = new Date();
+        document.getElementById('price-updated').textContent = 'อัพเดทล่าสุด: ' + now.toLocaleTimeString('th-TH');
+        document.getElementById('analysis-date').textContent = '🗓️ ' + now.toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        
+        // อัพเดท Signal
+        const signalBadge = document.getElementById('signal-badge');
+        signalBadge.className = 'signal-badge ' + signalData.class;
+        document.getElementById('signal-icon').textContent = signalData.icon;
+        document.getElementById('signal-text').textContent = signalData.text;
+        
+        // อัพเดท Summary
+        document.getElementById('analysis-summary').textContent = generateSummary(price, signalData.signal);
+        
+        // อัพเดทแนวรับ-แนวต้าน
+        document.getElementById('r2').textContent = formatPrice(levels.r2);
+        document.getElementById('r1').textContent = formatPrice(levels.r1);
+        document.getElementById('pivot').textContent = formatPrice(levels.pivot);
+        document.getElementById('s1').textContent = formatPrice(levels.s1);
+        document.getElementById('s2').textContent = formatPrice(levels.s2);
+        
+        // อัพเดท Buy/Sell Zone
+        document.getElementById('buy-zone').textContent = `${formatPrice(levels.s1)} - ${formatPrice(levels.s1 + 5)}`;
+        document.getElementById('buy-detail').textContent = `SL: ${formatPrice(levels.s2 - 5)} | TP: ${formatPrice(levels.pivot)}, ${formatPrice(levels.r1)}`;
+        
+        document.getElementById('sell-zone').textContent = `${formatPrice(levels.r1 - 5)} - ${formatPrice(levels.r1)}`;
+        document.getElementById('sell-detail').textContent = `SL: ${formatPrice(levels.r2 + 5)} | TP: ${formatPrice(levels.pivot)}, ${formatPrice(levels.s1)}`;
+        
+        // เก็บราคาล่าสุด (ไม่เก็บถ้าเป็น estimate)
+        if (!priceData.isEstimate) {
+            lastGoldPrice = price;
+        }
+        
+    } else {
+        // ใช้ fallback price
+        const fallbackPrice = 4650;
+        updateWithFallbackPrice(fallbackPrice);
+    }
+    
+    if (btn) {
+        btn.textContent = '🔄 อัพเดต';
+        btn.disabled = false;
+    }
+}
+
+function updateWithFallbackPrice(price) {
+    const levels = calculateLevels(price);
+    
+    document.getElementById('current-gold-price').textContent = '~$' + formatPrice(price);
+    document.getElementById('price-change').textContent = 'ราคาประมาณการ - ดูกราฟด้านบนสำหรับราคาจริง';
+    document.getElementById('price-change').className = 'price-change';
+    
+    const now = new Date();
+    document.getElementById('price-updated').textContent = 'อัพเดทล่าสุด: ' + now.toLocaleTimeString('th-TH');
+    document.getElementById('analysis-date').textContent = '🗓️ ' + now.toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    
+    document.getElementById('signal-badge').className = 'signal-badge neutral';
+    document.getElementById('signal-icon').textContent = '📊';
+    document.getElementById('signal-text').textContent = 'ดูกราฟประกอบ';
+    
+    document.getElementById('analysis-summary').textContent = `ราคาทองคำประมาณ $${formatPrice(price)} - แนะนำดูกราฟ TradingView ด้านบนสำหรับราคาและแนวโน้มที่แม่นยำ`;
+    
+    document.getElementById('r2').textContent = formatPrice(levels.r2);
+    document.getElementById('r1').textContent = formatPrice(levels.r1);
+    document.getElementById('pivot').textContent = formatPrice(levels.pivot);
+    document.getElementById('s1').textContent = formatPrice(levels.s1);
+    document.getElementById('s2').textContent = formatPrice(levels.s2);
+    
+    document.getElementById('buy-zone').textContent = `${formatPrice(levels.s1)} - ${formatPrice(levels.s1 + 5)}`;
+    document.getElementById('buy-detail').textContent = `SL: ${formatPrice(levels.s2 - 5)} | TP: ${formatPrice(levels.pivot)}, ${formatPrice(levels.r1)}`;
+    
+    document.getElementById('sell-zone').textContent = `${formatPrice(levels.r1 - 5)} - ${formatPrice(levels.r1)}`;
+    document.getElementById('sell-detail').textContent = `SL: ${formatPrice(levels.r2 + 5)} | TP: ${formatPrice(levels.pivot)}, ${formatPrice(levels.s1)}`;
+}
+
+function startGoldPriceUpdates() {
+    // เรียกครั้งแรกทันที
+    refreshGoldAnalysis();
+    
+    // ตั้ง interval อัพเดททุก 60 วินาที
+    if (goldPriceTimer) clearInterval(goldPriceTimer);
+    goldPriceTimer = setInterval(refreshGoldAnalysis, GOLD_PRICE_UPDATE_INTERVAL);
+}
 
 // ============ VALID CODES - ดึงจาก Admin หรือใช้ Default ============
 function getValidCodes() {
@@ -1464,6 +1682,119 @@ function unlock() {
     document.getElementById('journalUserCode').textContent = currentUserCode;
     loadJournalData();
     calcPos();
+    startGoldPriceUpdates(); // เริ่มอัพเดทราคาทองอัตโนมัติ
+    initAiOutlook(); // โหลด AI Daily Outlook
+}
+
+// ============ AI DAILY OUTLOOK ============
+function initAiOutlook() {
+    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+        script.onload = function() {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            loadAiOutlook();
+            // Subscribe to realtime updates
+            subscribeToOutlook();
+        };
+        document.head.appendChild(script);
+    } else {
+        // Fallback: LocalStorage
+        loadAiOutlookFromLocal();
+    }
+}
+
+async function loadAiOutlook() {
+    try {
+        if (supabaseClient) {
+            const { data, error } = await supabaseClient
+                .from('daily_insights')
+                .select('*')
+                .eq('id', 1)
+                .single();
+            
+            if (data) {
+                updateOutlookUI(data);
+            }
+        }
+    } catch (error) {
+        console.log('No AI outlook available');
+        loadAiOutlookFromLocal();
+    }
+}
+
+function loadAiOutlookFromLocal() {
+    const saved = localStorage.getItem('goldHub_daily_insight');
+    if (saved) {
+        const data = JSON.parse(saved);
+        updateOutlookUI(data);
+    } else {
+        // แสดงข้อความเริ่มต้น
+        updateOutlookUI({
+            content: '📊 ยังไม่มีบทวิเคราะห์ประจำวัน\n\nรอแอดมินอัพเดทบทวิเคราะห์ใหม่ หรือติดตามข่าวสารผ่าน Line OA',
+            sentiment: 'neutral',
+            updated_at: null
+        });
+    }
+}
+
+function updateOutlookUI(data) {
+    const widget = document.getElementById('aiOutlookWidget');
+    const sentimentEl = document.getElementById('outlookSentiment');
+    const contentEl = document.getElementById('outlookContent');
+    const timeEl = document.getElementById('outlookTime');
+    
+    // อัพเดท sentiment class
+    widget.className = 'ai-outlook-widget ' + (data.sentiment || 'neutral');
+    
+    // อัพเดท sentiment badge
+    const sentimentConfig = {
+        bullish: { icon: '📈', text: 'BULLISH - แนวโน้มขึ้น' },
+        bearish: { icon: '📉', text: 'BEARISH - แนวโน้มลง' },
+        neutral: { icon: '➡️', text: 'NEUTRAL - Sideways' }
+    };
+    const config = sentimentConfig[data.sentiment] || sentimentConfig.neutral;
+    sentimentEl.innerHTML = `<span class="sentiment-icon">${config.icon}</span><span class="sentiment-text">${config.text}</span>`;
+    
+    // อัพเดทเนื้อหา
+    contentEl.innerHTML = `<p>${data.content || 'ไม่มีข้อมูล'}</p>`;
+    
+    // อัพเดทเวลา
+    if (data.updated_at) {
+        const date = new Date(data.updated_at);
+        timeEl.textContent = 'อัพเดท: ' + date.toLocaleString('th-TH');
+    } else {
+        timeEl.textContent = '';
+    }
+}
+
+function subscribeToOutlook() {
+    if (!supabaseClient) return;
+    
+    supabaseClient
+        .channel('daily_insights_changes')
+        .on('postgres_changes', 
+            { event: '*', schema: 'public', table: 'daily_insights' }, 
+            (payload) => {
+                console.log('Realtime update received:', payload);
+                if (payload.new) {
+                    updateOutlookUI(payload.new);
+                    // แสดง notification
+                    showOutlookNotification();
+                }
+            }
+        )
+        .subscribe();
+}
+
+function showOutlookNotification() {
+    // สร้าง toast notification
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;top:80px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:16px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;animation:slideIn .3s ease';
+    toast.innerHTML = '🤖 บทวิเคราะห์ใหม่มาแล้ว!';
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.remove(), 5000);
 }
 
 function logout() {
