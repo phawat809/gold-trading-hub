@@ -1273,14 +1273,7 @@
     </div>
 </div>
 
-<script src="config.js"></script>
 <script>
-// ตรวจสอบว่าโหลด config.js สำเร็จหรือไม่
-if (typeof NOCODB_API_URL === 'undefined') {
-    document.body.innerHTML = '<div style="color:#ff5252;background:#1a1a22;padding:40px;text-align:center;font-family:sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center"><div><h1>⚠️ Config Error</h1><p>ไม่พบไฟล์ config.js — กรุณาสร้างไฟล์ config.js ที่มี API credentials</p></div></div>';
-    throw new Error('config.js not loaded');
-}
-
 // ============ NAVIGATION ============
 function toggleNavMenu() {
     const menu = document.getElementById('navMenu');
@@ -1351,9 +1344,9 @@ window.addEventListener('scroll', function() {
 const SESSION_CHECK_INTERVAL = 30000; // ตรวจ token ทุก 30 วินาที
 const GOLD_PRICE_UPDATE_INTERVAL = 3600000; // อัพเดทราคาทองทุก 1 ชั่วโมง
 
-// ============ NOCODB + SUPABASE CONFIG ============
-// ⚠️ Credentials โหลดจาก config.js (ไฟล์แยกที่ไม่ถูก commit ขึ้น GitHub)
-// ถ้าไม่มี config.js ระบบจะแสดง error แจ้งเตือน
+// ============ SUPABASE CONFIG (public anon key - safe for frontend) ============
+const SUPABASE_URL = 'https://dnxdbtahrtuavnwhlnyr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRueGRidGFocnR1YXZud2hsbnlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2MjYxMzgsImV4cCI6MjA4NjIwMjEzOH0.upLgtkbsi7RUQWLJy8tU-THgwcwuhkK31AWVKWBMtbg';
 
 let supabaseClient = null;
 let currentUserCode = null;   // Exness_Account ของผู้ใช้ที่ล็อกอิน
@@ -1571,50 +1564,19 @@ function startGoldPriceUpdates() {
     goldPriceTimer = setInterval(refreshGoldAnalysis, GOLD_PRICE_UPDATE_INTERVAL);
 }
 
-// ============ NOCODB HELPERS ============
-function generateToken() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0;
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-}
-
-async function nocodbFind(exnessAccount) {
-    var url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_TABLE_ID + '/records'
-        + '?where=(Exness_Account,eq,' + encodeURIComponent(exnessAccount) + ')&limit=1';
-    var resp = await fetch(url, { headers: { 'xc-token': NOCODB_API_TOKEN } });
-    if (!resp.ok) throw new Error('NocoDB request failed: ' + resp.status);
-    var data = await resp.json();
-    return data.list && data.list.length > 0 ? data.list[0] : null;
-}
-
-async function nocodbUpdateToken(recordId, token) {
-    var url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_TABLE_ID + '/records';
-    var resp = await fetch(url, {
-        method: 'PATCH',
-        headers: { 'xc-token': NOCODB_API_TOKEN, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ Id: recordId, Token: token })
-    });
-    if (!resp.ok) throw new Error('Token update failed: ' + resp.status);
-}
-
-async function nocodbGetToken(recordId) {
-    var url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_TABLE_ID + '/records/' + recordId
-        + '?fields=Token';
-    var resp = await fetch(url, { headers: { 'xc-token': NOCODB_API_TOKEN } });
-    if (!resp.ok) throw new Error('Token check failed: ' + resp.status);
-    var data = await resp.json();
-    return data.Token || null;
-}
-
 // ============ SESSION ============
 function startSessionMonitor() {
     if (sessionCheckTimer) clearInterval(sessionCheckTimer);
     sessionCheckTimer = setInterval(async function() {
         if (!currentRecordId || !currentToken) return;
         try {
-            var remoteToken = await nocodbGetToken(currentRecordId);
-            if (remoteToken !== currentToken) {
+            var resp = await fetch('/api/verify-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ recordId: currentRecordId, token: currentToken })
+            });
+            var data = await resp.json();
+            if (!data.valid) {
                 clearInterval(sessionCheckTimer);
                 showKickedModal();
             }
@@ -1654,21 +1616,20 @@ async function tryUnlock() {
     btn.disabled = true;
 
     try {
-        var record = await nocodbFind(username);
-        if (!record) throw new Error('not_found');
-        if (record.Password !== password) throw new Error('wrong_password');
-        if (record.Status !== 'Approved') throw new Error('not_approved');
-
-        // Login สำเร็จ — สร้าง token ใหม่ เขียนทับลง NocoDB + เก็บ localStorage
-        var token = generateToken();
-        await nocodbUpdateToken(record.Id, token);
+        var resp = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, password: password })
+        });
+        var data = await resp.json();
+        if (!resp.ok) throw new Error(data.error || 'login_failed');
 
         currentUserCode = username;
-        currentToken = token;
-        currentRecordId = record.Id;
+        currentToken = data.token;
+        currentRecordId = data.recordId;
         localStorage.setItem('goldHub_currentCode', username);
-        localStorage.setItem('goldHub_token', token);
-        localStorage.setItem('goldHub_recordId', String(record.Id));
+        localStorage.setItem('goldHub_token', data.token);
+        localStorage.setItem('goldHub_recordId', String(data.recordId));
 
         unlock();
         startSessionMonitor();
@@ -1692,8 +1653,13 @@ async function checkUnlocked() {
 
     if (savedCode && savedToken && savedRecordId) {
         try {
-            var remoteToken = await nocodbGetToken(savedRecordId);
-            if (remoteToken === savedToken) {
+            var resp = await fetch('/api/verify-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ recordId: savedRecordId, token: savedToken })
+            });
+            var data = await resp.json();
+            if (data.valid) {
                 currentUserCode = savedCode;
                 currentToken = savedToken;
                 currentRecordId = savedRecordId;
@@ -1704,7 +1670,6 @@ async function checkUnlocked() {
         } catch(e) {
             console.error('Auto-login check failed:', e);
         }
-        // Token ไม่ตรงหรือ error — ล้าง stale data
         localStorage.removeItem('goldHub_currentCode');
         localStorage.removeItem('goldHub_token');
         localStorage.removeItem('goldHub_recordId');
@@ -1836,7 +1801,11 @@ function showOutlookNotification() {
 function logout() {
     if (confirm('ต้องการออกจากระบบ?')) {
         if (currentRecordId) {
-            nocodbUpdateToken(currentRecordId, '').catch(function(){});
+            fetch('/api/logout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ recordId: currentRecordId })
+            }).catch(function(){});
         }
         localStorage.removeItem('goldHub_currentCode');
         localStorage.removeItem('goldHub_token');

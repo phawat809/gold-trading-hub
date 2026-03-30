@@ -1,5 +1,6 @@
+node_modules
+.env
+.git
 admin-dashboard.html
 config.js
-.env
-node_modules
 build.sh
