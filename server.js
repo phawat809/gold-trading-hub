@@ -87,12 +87,19 @@ async function upsertInsight(content, sentiment) {
   } else {
     // สร้าง row ใหม่
     const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_INSIGHTS_TABLE_ID + '/records';
+    console.log('Creating insight at:', url);
+    const bodyData = { content: content, sentiment: sentiment, update_time: updateTime };
+    console.log('Body:', JSON.stringify(bodyData));
     const resp = await fetch(url, {
       method: 'POST',
       headers: { 'xc-token': NOCODB_API_TOKEN, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: content, sentiment: sentiment, update_time: updateTime }),
+      body: JSON.stringify(bodyData),
     });
-    if (!resp.ok) throw new Error('Insight create failed: ' + resp.status);
+    if (!resp.ok) {
+      const errBody = await resp.text();
+      console.error('NocoDB response:', resp.status, errBody);
+      throw new Error('Insight create failed: ' + resp.status + ' - ' + errBody);
+    }
   }
 
   return updateTime;
