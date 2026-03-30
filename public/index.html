@@ -1344,11 +1344,6 @@ window.addEventListener('scroll', function() {
 const SESSION_CHECK_INTERVAL = 30000; // ตรวจ token ทุก 30 วินาที
 const GOLD_PRICE_UPDATE_INTERVAL = 3600000; // อัพเดทราคาทองทุก 1 ชั่วโมง
 
-// ============ SUPABASE CONFIG (public anon key - safe for frontend) ============
-const SUPABASE_URL = 'https://dnxdbtahrtuavnwhlnyr.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRueGRidGFocnR1YXZud2hsbnlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2MjYxMzgsImV4cCI6MjA4NjIwMjEzOH0.upLgtkbsi7RUQWLJy8tU-THgwcwuhkK31AWVKWBMtbg';
-
-let supabaseClient = null;
 let currentUserCode = null;   // Exness_Account ของผู้ใช้ที่ล็อกอิน
 let currentToken = null;      // Token UUID สำหรับ session นี้
 let currentRecordId = null;   // NocoDB row Id ของผู้ใช้ที่ล็อกอิน
@@ -1687,115 +1682,57 @@ function unlock() {
     initAiOutlook();
 }
 
-// ============ AI DAILY OUTLOOK ============
-function initAiOutlook() {
-    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-        script.onload = function() {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            loadAiOutlook();
-            // Subscribe to realtime updates
-            subscribeToOutlook();
-        };
-        document.head.appendChild(script);
-    } else {
-        // Fallback: LocalStorage
-        loadAiOutlookFromLocal();
-    }
-}
-
-async function loadAiOutlook() {
+// ============ AI DAILY OUTLOOK (via Server API → NocoDB) ============
+async function initAiOutlook() {
     try {
-        if (supabaseClient) {
-            const { data, error } = await supabaseClient
-                .from('daily_insights')
-                .select('*')
-                .eq('id', 1)
-                .single();
-            
-            if (data) {
-                updateOutlookUI(data);
-            }
+        var resp = await fetch('/api/insight');
+        var result = await resp.json();
+        if (result.data) {
+            updateOutlookUI(result.data);
+        } else {
+            updateOutlookUI({
+                content: '📊 ยังไม่มีบทวิเคราะห์ประจำวัน\n\nรอแอดมินอัพเดทบทวิเคราะห์ใหม่ หรือติดตามข่าวสารผ่าน Line OA',
+                sentiment: 'neutral',
+                update_time: null
+            });
         }
-    } catch (error) {
-        console.log('No AI outlook available');
-        loadAiOutlookFromLocal();
+    } catch (e) {
+        console.log('Failed to load AI outlook:', e);
     }
-}
 
-function loadAiOutlookFromLocal() {
-    const saved = localStorage.getItem('goldHub_daily_insight');
-    if (saved) {
-        const data = JSON.parse(saved);
-        updateOutlookUI(data);
-    } else {
-        // แสดงข้อความเริ่มต้น
-        updateOutlookUI({
-            content: '📊 ยังไม่มีบทวิเคราะห์ประจำวัน\n\nรอแอดมินอัพเดทบทวิเคราะห์ใหม่ หรือติดตามข่าวสารผ่าน Line OA',
-            sentiment: 'neutral',
-            updated_at: null
-        });
-    }
+    // Poll ทุก 5 นาที เพื่อดึงบทวิเคราะห์ใหม่
+    setInterval(async function() {
+        try {
+            var resp = await fetch('/api/insight');
+            var result = await resp.json();
+            if (result.data) updateOutlookUI(result.data);
+        } catch(e) {}
+    }, 300000);
 }
 
 function updateOutlookUI(data) {
-    const widget = document.getElementById('aiOutlookWidget');
-    const sentimentEl = document.getElementById('outlookSentiment');
-    const contentEl = document.getElementById('outlookContent');
-    const timeEl = document.getElementById('outlookTime');
-    
-    // อัพเดท sentiment class
+    var widget = document.getElementById('aiOutlookWidget');
+    var sentimentEl = document.getElementById('outlookSentiment');
+    var contentEl = document.getElementById('outlookContent');
+    var timeEl = document.getElementById('outlookTime');
+
     widget.className = 'ai-outlook-widget ' + (data.sentiment || 'neutral');
-    
-    // อัพเดท sentiment badge
-    const sentimentConfig = {
+
+    var sentimentConfig = {
         bullish: { icon: '📈', text: 'BULLISH - แนวโน้มขึ้น' },
         bearish: { icon: '📉', text: 'BEARISH - แนวโน้มลง' },
         neutral: { icon: '➡️', text: 'NEUTRAL - Sideways' }
     };
-    const config = sentimentConfig[data.sentiment] || sentimentConfig.neutral;
-    sentimentEl.innerHTML = `<span class="sentiment-icon">${config.icon}</span><span class="sentiment-text">${config.text}</span>`;
-    
-    // อัพเดทเนื้อหา
-    contentEl.innerHTML = `<p>${data.content || 'ไม่มีข้อมูล'}</p>`;
-    
-    // อัพเดทเวลา
-    if (data.updated_at) {
-        const date = new Date(data.updated_at);
+    var config = sentimentConfig[data.sentiment] || sentimentConfig.neutral;
+    sentimentEl.innerHTML = '<span class="sentiment-icon">' + config.icon + '</span><span class="sentiment-text">' + config.text + '</span>';
+    contentEl.innerHTML = '<p>' + (data.content || 'ไม่มีข้อมูล') + '</p>';
+
+    if (data.update_time) {
+        var date = new Date(data.update_time);
         timeEl.textContent = 'อัพเดท: ' + date.toLocaleString('th-TH');
     } else {
         timeEl.textContent = '';
     }
-}
-
-function subscribeToOutlook() {
-    if (!supabaseClient) return;
-    
-    supabaseClient
-        .channel('daily_insights_changes')
-        .on('postgres_changes', 
-            { event: '*', schema: 'public', table: 'daily_insights' }, 
-            (payload) => {
-                console.log('Realtime update received:', payload);
-                if (payload.new) {
-                    updateOutlookUI(payload.new);
-                    // แสดง notification
-                    showOutlookNotification();
-                }
-            }
-        )
-        .subscribe();
-}
-
-function showOutlookNotification() {
-    // สร้าง toast notification
-    const toast = document.createElement('div');
-    toast.style.cssText = 'position:fixed;top:80px;right:20px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:16px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;animation:slideIn .3s ease';
-    toast.innerHTML = '🤖 บทวิเคราะห์ใหม่มาแล้ว!';
-    document.body.appendChild(toast);
-    
-    setTimeout(() => toast.remove(), 5000);
 }
 
 function logout() {

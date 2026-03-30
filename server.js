@@ -6,14 +6,22 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const { NOCODB_API_URL, NOCODB_API_TOKEN, NOCODB_TABLE_ID } = process.env;
+const {
+  NOCODB_API_URL,
+  NOCODB_API_TOKEN,
+  NOCODB_TABLE_ID,
+  NOCODB_INSIGHTS_TABLE_ID,
+  ADMIN_PASSWORD
+} = process.env;
 
 if (!NOCODB_API_URL || !NOCODB_API_TOKEN || !NOCODB_TABLE_ID) {
   console.error('ERROR: Missing required env vars: NOCODB_API_URL, NOCODB_API_TOKEN, NOCODB_TABLE_ID');
   process.exit(1);
 }
 
-// ============ HELPERS ============
+const adminPass = ADMIN_PASSWORD || 'admin2026';
+
+// ============ NOCODB HELPERS (Customers) ============
 
 function generateToken() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -23,9 +31,8 @@ function generateToken() {
 }
 
 async function nocodbFind(exnessAccount) {
-  const url =
-    NOCODB_API_URL + '/api/v2/tables/' + NOCODB_TABLE_ID + '/records' +
-    '?where=(Exness_Account,eq,' + encodeURIComponent(exnessAccount) + ')&limit=1';
+  const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_TABLE_ID + '/records'
+    + '?where=(Exness_Account,eq,' + encodeURIComponent(exnessAccount) + ')&limit=1';
   const resp = await fetch(url, { headers: { 'xc-token': NOCODB_API_TOKEN } });
   if (!resp.ok) throw new Error('NocoDB find failed: ' + resp.status);
   const data = await resp.json();
@@ -43,15 +50,55 @@ async function nocodbUpdateToken(recordId, token) {
 }
 
 async function nocodbGetToken(recordId) {
-  const url =
-    NOCODB_API_URL + '/api/v2/tables/' + NOCODB_TABLE_ID + '/records/' + recordId + '?fields=Token';
+  const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_TABLE_ID + '/records/' + recordId + '?fields=Token';
   const resp = await fetch(url, { headers: { 'xc-token': NOCODB_API_TOKEN } });
   if (!resp.ok) throw new Error('Token check failed: ' + resp.status);
   const data = await resp.json();
   return data.Token || null;
 }
 
-// ============ API ENDPOINTS ============
+// ============ NOCODB HELPERS (Insights) ============
+
+async function getInsight() {
+  if (!NOCODB_INSIGHTS_TABLE_ID) return null;
+  const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_INSIGHTS_TABLE_ID + '/records?limit=1&sort=-update_time';
+  const resp = await fetch(url, { headers: { 'xc-token': NOCODB_API_TOKEN } });
+  if (!resp.ok) return null;
+  const data = await resp.json();
+  return data.list && data.list.length > 0 ? data.list[0] : null;
+}
+
+async function upsertInsight(content, sentiment) {
+  if (!NOCODB_INSIGHTS_TABLE_ID) throw new Error('NOCODB_INSIGHTS_TABLE_ID not configured');
+  const updateTime = new Date().toISOString();
+
+  // ดูว่ามี row อยู่แล้วหรือยัง
+  const existing = await getInsight();
+
+  if (existing && existing.Id) {
+    // อัพเดท row เดิม
+    const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_INSIGHTS_TABLE_ID + '/records';
+    const resp = await fetch(url, {
+      method: 'PATCH',
+      headers: { 'xc-token': NOCODB_API_TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ Id: existing.Id, content: content, sentiment: sentiment, update_time: updateTime }),
+    });
+    if (!resp.ok) throw new Error('Insight update failed: ' + resp.status);
+  } else {
+    // สร้าง row ใหม่
+    const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_INSIGHTS_TABLE_ID + '/records';
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'xc-token': NOCODB_API_TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: content, sentiment: sentiment, update_time: updateTime }),
+    });
+    if (!resp.ok) throw new Error('Insight create failed: ' + resp.status);
+  }
+
+  return updateTime;
+}
+
+// ============ USER API ENDPOINTS ============
 
 app.post('/api/login', async (req, res) => {
   try {
@@ -97,73 +144,46 @@ app.post('/api/logout', async (req, res) => {
   }
 });
 
+// ============ PUBLIC INSIGHT ENDPOINT (ลูกค้าเรียก) ============
+
+app.get('/api/insight', async (req, res) => {
+  try {
+    const data = await getInsight();
+    res.json({ data: data || null });
+  } catch (e) {
+    console.error('Load insight error:', e.message);
+    res.json({ data: null });
+  }
+});
+
 // ============ ADMIN ENDPOINTS ============
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin2026';
-const { SUPABASE_URL, SUPABASE_ANON_KEY } = process.env;
-
-// POST /api/admin/login
 app.post('/api/admin/login', (req, res) => {
   const { password } = req.body;
-  if (password === ADMIN_PASSWORD) {
+  if (password === adminPass) {
     res.json({ ok: true });
   } else {
     res.status(401).json({ error: 'wrong_password' });
   }
 });
 
-// POST /api/admin/broadcast - Save AI insight to Supabase
 app.post('/api/admin/broadcast', async (req, res) => {
   try {
     const { content, sentiment } = req.body;
     if (!content) return res.status(400).json({ error: 'missing_content' });
 
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-      return res.status(500).json({ error: 'supabase_not_configured' });
-    }
-
-    const insightData = { id: 1, content, sentiment: sentiment || 'neutral', updated_at: new Date().toISOString() };
-
-    const resp = await fetch(SUPABASE_URL + '/rest/v1/daily_insights?on_conflict=id', {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates'
-      },
-      body: JSON.stringify(insightData)
-    });
-
-    if (!resp.ok) {
-      const errText = await resp.text();
-      throw new Error('Supabase error: ' + resp.status + ' ' + errText);
-    }
-
-    res.json({ ok: true, updated_at: insightData.updated_at });
+    const updateTime = await upsertInsight(content, sentiment || 'neutral');
+    res.json({ ok: true, update_time: updateTime });
   } catch (e) {
     console.error('Broadcast error:', e.message);
     res.status(500).json({ error: e.message });
   }
 });
 
-// GET /api/admin/insight - Load last insight from Supabase
 app.get('/api/admin/insight', async (req, res) => {
   try {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-      return res.json({ data: null });
-    }
-
-    const resp = await fetch(SUPABASE_URL + '/rest/v1/daily_insights?id=eq.1&select=*', {
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
-      }
-    });
-
-    if (!resp.ok) throw new Error('Supabase error: ' + resp.status);
-    const data = await resp.json();
-    res.json({ data: data && data.length > 0 ? data[0] : null });
+    const data = await getInsight();
+    res.json({ data: data || null });
   } catch (e) {
     console.error('Load insight error:', e.message);
     res.json({ data: null });
