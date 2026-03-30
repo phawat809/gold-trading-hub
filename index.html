@@ -1273,7 +1273,14 @@
     </div>
 </div>
 
+<script src="config.js"></script>
 <script>
+// ตรวจสอบว่าโหลด config.js สำเร็จหรือไม่
+if (typeof NOCODB_API_URL === 'undefined') {
+    document.body.innerHTML = '<div style="color:#ff5252;background:#1a1a22;padding:40px;text-align:center;font-family:sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center"><div><h1>⚠️ Config Error</h1><p>ไม่พบไฟล์ config.js — กรุณาสร้างไฟล์ config.js ที่มี API credentials</p></div></div>';
+    throw new Error('config.js not loaded');
+}
+
 // ============ NAVIGATION ============
 function toggleNavMenu() {
     const menu = document.getElementById('navMenu');
@@ -1344,15 +1351,9 @@ window.addEventListener('scroll', function() {
 const SESSION_CHECK_INTERVAL = 30000; // ตรวจ token ทุก 30 วินาที
 const GOLD_PRICE_UPDATE_INTERVAL = 3600000; // อัพเดทราคาทองทุก 1 ชั่วโมง
 
-// ============ NOCODB CONFIG ============
-// ⚠️ แก้ไข 3 ค่านี้ให้ตรงกับ NocoDB ของคุณ
-const NOCODB_API_URL   = 'https://crm.goldtradinghubfx.com';   // URL ของ NocoDB (ไม่มี / ต่อท้าย)
-const NOCODB_API_TOKEN = 'REDACTED';  // API Token จาก NocoDB
-const NOCODB_TABLE_ID  = 'mvk5ryon2hhg2gy';                   // Table ID ของตาราง Customers
-
-// ============ SUPABASE CONFIG (สำหรับ AI Outlook - ถ้าไม่ใช้ให้ปล่อยเป็น placeholder) ============
-const SUPABASE_URL = 'https://dnxdbtahrtuavnwhlnyr.supabase.co';
-const SUPABASE_ANON_KEY = 'REDACTED';
+// ============ NOCODB + SUPABASE CONFIG ============
+// ⚠️ Credentials โหลดจาก config.js (ไฟล์แยกที่ไม่ถูก commit ขึ้น GitHub)
+// ถ้าไม่มี config.js ระบบจะแสดง error แจ้งเตือน
 
 let supabaseClient = null;
 let currentUserCode = null;   // Exness_Account ของผู้ใช้ที่ล็อกอิน
