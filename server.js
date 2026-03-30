@@ -6,13 +6,11 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const {
-  NOCODB_API_URL,
-  NOCODB_API_TOKEN,
-  NOCODB_TABLE_ID,
-  NOCODB_INSIGHTS_TABLE_ID,
-  ADMIN_PASSWORD
-} = process.env;
+const NOCODB_API_URL = (process.env.NOCODB_API_URL || '').replace(/\/+$/, '');
+const NOCODB_API_TOKEN = process.env.NOCODB_API_TOKEN;
+const NOCODB_TABLE_ID = process.env.NOCODB_TABLE_ID;
+const NOCODB_INSIGHTS_TABLE_ID = process.env.NOCODB_INSIGHTS_TABLE_ID;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 if (!NOCODB_API_URL || !NOCODB_API_TOKEN || !NOCODB_TABLE_ID) {
   console.error('ERROR: Missing required env vars: NOCODB_API_URL, NOCODB_API_TOKEN, NOCODB_TABLE_ID');
@@ -20,6 +18,7 @@ if (!NOCODB_API_URL || !NOCODB_API_TOKEN || !NOCODB_TABLE_ID) {
 }
 
 const adminPass = ADMIN_PASSWORD || 'admin2026';
+console.log('NOCODB_API_URL:', NOCODB_API_URL);
 
 // ============ NOCODB HELPERS (Customers) ============
 
