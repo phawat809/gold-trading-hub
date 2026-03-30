@@ -97,6 +97,79 @@ app.post('/api/logout', async (req, res) => {
   }
 });
 
+// ============ ADMIN ENDPOINTS ============
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin2026';
+const { SUPABASE_URL, SUPABASE_ANON_KEY } = process.env;
+
+// POST /api/admin/login
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body;
+  if (password === ADMIN_PASSWORD) {
+    res.json({ ok: true });
+  } else {
+    res.status(401).json({ error: 'wrong_password' });
+  }
+});
+
+// POST /api/admin/broadcast - Save AI insight to Supabase
+app.post('/api/admin/broadcast', async (req, res) => {
+  try {
+    const { content, sentiment } = req.body;
+    if (!content) return res.status(400).json({ error: 'missing_content' });
+
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      return res.status(500).json({ error: 'supabase_not_configured' });
+    }
+
+    const insightData = { id: 1, content, sentiment: sentiment || 'neutral', updated_at: new Date().toISOString() };
+
+    const resp = await fetch(SUPABASE_URL + '/rest/v1/daily_insights?on_conflict=id', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify(insightData)
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error('Supabase error: ' + resp.status + ' ' + errText);
+    }
+
+    res.json({ ok: true, updated_at: insightData.updated_at });
+  } catch (e) {
+    console.error('Broadcast error:', e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// GET /api/admin/insight - Load last insight from Supabase
+app.get('/api/admin/insight', async (req, res) => {
+  try {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      return res.json({ data: null });
+    }
+
+    const resp = await fetch(SUPABASE_URL + '/rest/v1/daily_insights?id=eq.1&select=*', {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+      }
+    });
+
+    if (!resp.ok) throw new Error('Supabase error: ' + resp.status);
+    const data = await resp.json();
+    res.json({ data: data && data.length > 0 ? data[0] : null });
+  } catch (e) {
+    console.error('Load insight error:', e.message);
+    res.json({ data: null });
+  }
+});
+
 // ============ START ============
 
 const PORT = process.env.PORT || 3000;
