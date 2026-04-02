@@ -180,6 +180,21 @@ app.post('/api/admin/broadcast', async (req, res) => {
     if (!content) return res.status(400).json({ error: 'missing_content' });
 
     const updateTime = await upsertInsight(content, sentiment || 'neutral');
+
+    // Webhook to Make.com (LINE + Facebook automation)
+    const webhookUrl = process.env.MAKE_WEBHOOK_URL;
+    if (webhookUrl) {
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content, sentiment: sentiment || 'neutral', update_time: updateTime }),
+        });
+      } catch (whErr) {
+        console.error('Webhook error (non-blocking):', whErr.message);
+      }
+    }
+
     res.json({ ok: true, update_time: updateTime });
   } catch (e) {
     console.error('Broadcast error:', e.message);
