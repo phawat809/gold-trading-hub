@@ -70,33 +70,34 @@ async function getInsight() {
 async function upsertInsight(content, sentiment) {
   if (!NOCODB_INSIGHTS_TABLE_ID) throw new Error('NOCODB_INSIGHTS_TABLE_ID not configured');
   const updateTime = new Date().toISOString();
+  const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_INSIGHTS_TABLE_ID + '/records';
 
   // ดูว่ามี row อยู่แล้วหรือยัง
   const existing = await getInsight();
+  const existingId = existing ? (existing.Id || existing.id) : null;
 
-  if (existing && existing.Id) {
+  if (existingId) {
     // อัพเดท row เดิม
-    const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_INSIGHTS_TABLE_ID + '/records';
     const resp = await fetch(url, {
       method: 'PATCH',
       headers: { 'xc-token': NOCODB_API_TOKEN, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ Id: existing.Id, content: content, sentiment: sentiment, update_time: updateTime }),
-    });
-    if (!resp.ok) throw new Error('Insight update failed: ' + resp.status);
-  } else {
-    // สร้าง row ใหม่
-    const url = NOCODB_API_URL + '/api/v2/tables/' + NOCODB_INSIGHTS_TABLE_ID + '/records';
-    console.log('Creating insight at:', url);
-    const bodyData = { content: content, sentiment: sentiment, update_time: updateTime };
-    console.log('Body:', JSON.stringify(bodyData));
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'xc-token': NOCODB_API_TOKEN, 'Content-Type': 'application/json' },
-      body: JSON.stringify(bodyData),
+      body: JSON.stringify({ Id: existingId, content: content, sentiment: sentiment, update_time: updateTime }),
     });
     if (!resp.ok) {
       const errBody = await resp.text();
-      console.error('NocoDB response:', resp.status, errBody);
+      console.error('NocoDB PATCH:', resp.status, errBody);
+      throw new Error('Insight update failed: ' + resp.status);
+    }
+  } else {
+    // สร้าง row ใหม่ (ไม่ส่ง Id ให้ NocoDB auto-generate)
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'xc-token': NOCODB_API_TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ Title: 'daily', content: content, sentiment: sentiment, update_time: updateTime }),
+    });
+    if (!resp.ok) {
+      const errBody = await resp.text();
+      console.error('NocoDB POST:', resp.status, errBody);
       throw new Error('Insight create failed: ' + resp.status + ' - ' + errBody);
     }
   }
