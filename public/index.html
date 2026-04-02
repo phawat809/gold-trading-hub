@@ -610,6 +610,128 @@
             </div>
         </div>
 
+        <!-- TABS -->
+        <nav class="tabs" id="calculator">
+            <button class="tab active" onclick="showSection('position')"><span>📐</span> Position Size</button>
+            <button class="tab" onclick="showSection('risk')"><span>⚖️</span> Risk/Reward</button>
+            <button class="tab" onclick="showSection('compound')"><span>📈</span> Compound</button>
+            <button class="tab" onclick="showSection('journal')"><span>📓</span> Journal</button>
+        </nav>
+
+        <!-- POSITION SIZE -->
+        <section id="position" class="section active">
+            <div class="card" style="max-width:900px;margin:0 auto">
+                <div class="card-head"><span class="card-icon">📐</span><h2 class="card-title">Position Size Calculator</h2></div>
+                <p class="card-desc">คำนวณ Lot Size ตาม Risk %</p>
+                <div class="grid">
+                    <div class="form-group"><label class="label">ขนาดบัญชี</label><div class="input-wrap"><input type="number" id="p-bal" value="10000"><span class="suffix">USD</span></div></div>
+                    <div class="form-group"><label class="label">Risk ต่อออร์เดอร์</label><div class="input-wrap"><input type="number" id="p-risk" value="2" step="0.1"><span class="suffix">%</span></div></div>
+                    <div class="form-group"><label class="label">Stop Loss</label><div class="input-wrap"><input type="number" id="p-sl" value="50"><span class="suffix">pips</span></div></div>
+                    <div class="form-group"><label class="label">Take Profit</label><div class="input-wrap"><input type="number" id="p-tp" value="100"><span class="suffix">pips</span></div></div>
+                    <div class="form-group"><label class="label">Pip Value (1 Lot)</label><div class="input-wrap"><input type="number" id="p-pip" value="10" step="0.1"><span class="suffix">$/pip</span></div></div>
+                </div>
+                <button class="btn" onclick="calcPos()"><span>⚡</span> คำนวณ</button>
+                <div class="results" id="p-res" style="display:none">
+                    <div class="results-title">📊 ผลลัพธ์</div>
+                    <div class="res-grid">
+                        <div class="res-box hl"><div class="res-label">Position Size</div><div class="res-val" id="p-lot">0</div></div>
+                        <div class="res-box"><div class="res-label">เงินที่ Risk</div><div class="res-val" id="p-amt">$0</div></div>
+                        <div class="res-box"><div class="res-label">ถ้าโดน SL</div><div class="res-val down" id="p-loss">-$0</div></div>
+                        <div class="res-box" style="background:var(--green-dim);border-color:var(--green)"><div class="res-label">ถ้าถึง TP</div><div class="res-val up" id="p-profit">+$0</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RISK/REWARD -->
+        <section id="risk" class="section">
+            <div class="card" style="max-width:800px;margin:0 auto">
+                <div class="card-head"><span class="card-icon">⚖️</span><h2 class="card-title">Risk/Reward Calculator</h2></div>
+                <p class="card-desc">คำนวณ RR Ratio</p>
+                <div class="grid">
+                    <div class="form-group"><label class="label">Entry</label><div class="input-wrap"><input type="number" id="r-entry" value="2650" step="0.01"></div></div>
+                    <div class="form-group"><label class="label">Stop Loss</label><div class="input-wrap"><input type="number" id="r-sl" value="2630" step="0.01"></div></div>
+                    <div class="form-group"><label class="label">Take Profit</label><div class="input-wrap"><input type="number" id="r-tp" value="2700" step="0.01"></div></div>
+                    <div class="form-group"><label class="label">Position Type</label><div class="input-wrap"><select id="r-type"><option value="buy">Buy</option><option value="sell">Sell</option></select></div></div>
+                </div>
+                <button class="btn" onclick="calcRR()"><span>⚡</span> คำนวณ</button>
+                <div class="results" id="r-res" style="display:none">
+                    <div class="results-title">📊 ผลลัพธ์</div>
+                    <div class="res-grid">
+                        <div class="res-box hl"><div class="res-label">Risk:Reward</div><div class="res-val" id="r-ratio">1:0</div></div>
+                        <div class="res-box"><div class="res-label">Risk (pips)</div><div class="res-val down" id="r-risk">0</div></div>
+                        <div class="res-box"><div class="res-label">Reward (pips)</div><div class="res-val up" id="r-reward">0</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPOUND -->
+        <section id="compound" class="section">
+            <div class="card" style="max-width:800px;margin:0 auto">
+                <div class="card-head"><span class="card-icon">📈</span><h2 class="card-title">Compound Calculator</h2></div>
+                <p class="card-desc">คำนวณดอกเบี้ยทบต้น</p>
+                <div class="grid">
+                    <div class="form-group"><label class="label">เงินต้น</label><div class="input-wrap"><input type="number" id="c-start" value="1000"><span class="suffix">USD</span></div></div>
+                    <div class="form-group"><label class="label">กำไร/เดือน</label><div class="input-wrap"><input type="number" id="c-mon" value="10" step="0.1"><span class="suffix">%</span></div></div>
+                    <div class="form-group"><label class="label">ระยะเวลา</label><div class="input-wrap"><input type="number" id="c-months" value="12"><span class="suffix">เดือน</span></div></div>
+                </div>
+                <button class="btn" onclick="calcComp()"><span>⚡</span> คำนวณ</button>
+                <div class="results" id="c-res" style="display:none">
+                    <div class="results-title">📊 ผลลัพธ์</div>
+                    <div class="res-grid">
+                        <div class="res-box hl"><div class="res-label">ยอดสุดท้าย</div><div class="res-val" id="c-final">$0</div></div>
+                        <div class="res-box"><div class="res-label">กำไรทั้งหมด</div><div class="res-val up" id="c-profit">$0</div></div>
+                        <div class="res-box"><div class="res-label">% เติบโต</div><div class="res-val up" id="c-grow">0%</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JOURNAL -->
+        <section id="journal" class="section">
+            <div class="card" style="max-width:1000px;margin:0 auto">
+                <div class="card-head"><span class="card-icon">📓</span><h2 class="card-title">Trading Journal</h2></div>
+                <p class="card-desc">บันทึกการเทรดส่วนตัว</p>
+
+                <div class="journal-header">
+                    <div class="journal-user">
+                        <div class="journal-user-icon">👤</div>
+                        <div class="journal-user-info">
+                            <div class="journal-user-name">บัญชีของคุณ</div>
+                            <div class="journal-user-code" id="journalUserCode">-</div>
+                        </div>
+                    </div>
+                    <div class="journal-actions">
+                        <button class="btn btn-small btn-outline" onclick="exportJournal()">📤 Export</button>
+                        <button class="btn btn-small btn-outline" onclick="document.getElementById('importFile').click()">📥 Import</button>
+                        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJournal(event)">
+                        <button class="btn btn-small btn-danger" onclick="clearJournal()">🗑️ ล้าง</button>
+                    </div>
+                </div>
+
+                <div class="journal-stats">
+                    <div class="journal-stat"><div class="journal-stat-value" id="stat-total">0</div><div class="journal-stat-label">ทั้งหมด</div></div>
+                    <div class="journal-stat"><div class="journal-stat-value up" id="stat-win">0</div><div class="journal-stat-label">ชนะ</div></div>
+                    <div class="journal-stat"><div class="journal-stat-value down" id="stat-loss">0</div><div class="journal-stat-label">แพ้</div></div>
+                    <div class="journal-stat"><div class="journal-stat-value" id="stat-pnl">$0</div><div class="journal-stat-label">P/L</div></div>
+                </div>
+
+                <div class="grid">
+                    <div class="form-group"><label class="label">วันที่</label><div class="input-wrap"><input type="date" id="j-date"></div></div>
+                    <div class="form-group"><label class="label">ประเภท</label><div class="input-wrap"><select id="j-type"><option value="buy">Buy</option><option value="sell">Sell</option></select></div></div>
+                    <div class="form-group"><label class="label">Entry</label><div class="input-wrap"><input type="number" id="j-entry" step="0.01" placeholder="2650"></div></div>
+                    <div class="form-group"><label class="label">Exit</label><div class="input-wrap"><input type="number" id="j-exit" step="0.01" placeholder="2680"></div></div>
+                    <div class="form-group"><label class="label">Lot</label><div class="input-wrap"><input type="number" id="j-lot" step="0.01" value="0.1"></div></div>
+                    <div class="form-group"><label class="label">P/L ($)</label><div class="input-wrap"><input type="number" id="j-pnl" step="0.01" placeholder="300"></div></div>
+                </div>
+                <div class="form-group" style="margin-bottom:24px"><label class="label">Notes</label><div class="input-wrap"><textarea id="j-notes" placeholder="บันทึกบทเรียน..."></textarea></div></div>
+                <button class="btn" onclick="addJournal()"><span>💾</span> บันทึก</button>
+
+                <div id="journal-list" style="margin-top:28px"></div>
+            </div>
+        </section>
+
         <!-- ROW 2: NEWS + CALENDAR -->
         <div class="grid-2">
             <!-- GOLD NEWS -->
@@ -1127,127 +1249,7 @@
             </div>
         </div>
 
-        <!-- TABS -->
-        <nav class="tabs" id="calculator">
-            <button class="tab active" onclick="showSection('position')"><span>📐</span> Position Size</button>
-            <button class="tab" onclick="showSection('risk')"><span>⚖️</span> Risk/Reward</button>
-            <button class="tab" onclick="showSection('compound')"><span>📈</span> Compound</button>
-            <button class="tab" onclick="showSection('journal')"><span>📓</span> Journal</button>
-        </nav>
-
-        <!-- POSITION SIZE -->
-        <section id="position" class="section active">
-            <div class="card" style="max-width:900px;margin:0 auto">
-                <div class="card-head"><span class="card-icon">📐</span><h2 class="card-title">Position Size Calculator</h2></div>
-                <p class="card-desc">คำนวณ Lot Size ตาม Risk %</p>
-                <div class="grid">
-                    <div class="form-group"><label class="label">ขนาดบัญชี</label><div class="input-wrap"><input type="number" id="p-bal" value="10000"><span class="suffix">USD</span></div></div>
-                    <div class="form-group"><label class="label">Risk ต่อออร์เดอร์</label><div class="input-wrap"><input type="number" id="p-risk" value="2" step="0.1"><span class="suffix">%</span></div></div>
-                    <div class="form-group"><label class="label">Stop Loss</label><div class="input-wrap"><input type="number" id="p-sl" value="50"><span class="suffix">pips</span></div></div>
-                    <div class="form-group"><label class="label">Take Profit</label><div class="input-wrap"><input type="number" id="p-tp" value="100"><span class="suffix">pips</span></div></div>
-                    <div class="form-group"><label class="label">Pip Value (1 Lot)</label><div class="input-wrap"><input type="number" id="p-pip" value="10" step="0.1"><span class="suffix">$/pip</span></div></div>
-                </div>
-                <button class="btn" onclick="calcPos()"><span>⚡</span> คำนวณ</button>
-                <div class="results" id="p-res" style="display:none">
-                    <div class="results-title">📊 ผลลัพธ์</div>
-                    <div class="res-grid">
-                        <div class="res-box hl"><div class="res-label">Position Size</div><div class="res-val" id="p-lot">0</div></div>
-                        <div class="res-box"><div class="res-label">เงินที่ Risk</div><div class="res-val" id="p-amt">$0</div></div>
-                        <div class="res-box"><div class="res-label">ถ้าโดน SL</div><div class="res-val down" id="p-loss">-$0</div></div>
-                        <div class="res-box" style="background:var(--green-dim);border-color:var(--green)"><div class="res-label">ถ้าถึง TP</div><div class="res-val up" id="p-profit">+$0</div></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- RISK/REWARD -->
-        <section id="risk" class="section">
-            <div class="card" style="max-width:800px;margin:0 auto">
-                <div class="card-head"><span class="card-icon">⚖️</span><h2 class="card-title">Risk/Reward Calculator</h2></div>
-                <p class="card-desc">คำนวณ RR Ratio</p>
-                <div class="grid">
-                    <div class="form-group"><label class="label">Entry</label><div class="input-wrap"><input type="number" id="r-entry" value="2650" step="0.01"></div></div>
-                    <div class="form-group"><label class="label">Stop Loss</label><div class="input-wrap"><input type="number" id="r-sl" value="2630" step="0.01"></div></div>
-                    <div class="form-group"><label class="label">Take Profit</label><div class="input-wrap"><input type="number" id="r-tp" value="2700" step="0.01"></div></div>
-                    <div class="form-group"><label class="label">Position Type</label><div class="input-wrap"><select id="r-type"><option value="buy">Buy</option><option value="sell">Sell</option></select></div></div>
-                </div>
-                <button class="btn" onclick="calcRR()"><span>⚡</span> คำนวณ</button>
-                <div class="results" id="r-res" style="display:none">
-                    <div class="results-title">📊 ผลลัพธ์</div>
-                    <div class="res-grid">
-                        <div class="res-box hl"><div class="res-label">Risk:Reward</div><div class="res-val" id="r-ratio">1:0</div></div>
-                        <div class="res-box"><div class="res-label">Risk (pips)</div><div class="res-val down" id="r-risk">0</div></div>
-                        <div class="res-box"><div class="res-label">Reward (pips)</div><div class="res-val up" id="r-reward">0</div></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- COMPOUND -->
-        <section id="compound" class="section">
-            <div class="card" style="max-width:800px;margin:0 auto">
-                <div class="card-head"><span class="card-icon">📈</span><h2 class="card-title">Compound Calculator</h2></div>
-                <p class="card-desc">คำนวณดอกเบี้ยทบต้น</p>
-                <div class="grid">
-                    <div class="form-group"><label class="label">เงินต้น</label><div class="input-wrap"><input type="number" id="c-start" value="1000"><span class="suffix">USD</span></div></div>
-                    <div class="form-group"><label class="label">กำไร/เดือน</label><div class="input-wrap"><input type="number" id="c-mon" value="10" step="0.1"><span class="suffix">%</span></div></div>
-                    <div class="form-group"><label class="label">ระยะเวลา</label><div class="input-wrap"><input type="number" id="c-months" value="12"><span class="suffix">เดือน</span></div></div>
-                </div>
-                <button class="btn" onclick="calcComp()"><span>⚡</span> คำนวณ</button>
-                <div class="results" id="c-res" style="display:none">
-                    <div class="results-title">📊 ผลลัพธ์</div>
-                    <div class="res-grid">
-                        <div class="res-box hl"><div class="res-label">ยอดสุดท้าย</div><div class="res-val" id="c-final">$0</div></div>
-                        <div class="res-box"><div class="res-label">กำไรทั้งหมด</div><div class="res-val up" id="c-profit">$0</div></div>
-                        <div class="res-box"><div class="res-label">% เติบโต</div><div class="res-val up" id="c-grow">0%</div></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- JOURNAL -->
-        <section id="journal" class="section">
-            <div class="card" style="max-width:1000px;margin:0 auto">
-                <div class="card-head"><span class="card-icon">📓</span><h2 class="card-title">Trading Journal</h2></div>
-                <p class="card-desc">บันทึกการเทรดส่วนตัว</p>
-                
-                <div class="journal-header">
-                    <div class="journal-user">
-                        <div class="journal-user-icon">👤</div>
-                        <div class="journal-user-info">
-                            <div class="journal-user-name">บัญชีของคุณ</div>
-                            <div class="journal-user-code" id="journalUserCode">-</div>
-                        </div>
-                    </div>
-                    <div class="journal-actions">
-                        <button class="btn btn-small btn-outline" onclick="exportJournal()">📤 Export</button>
-                        <button class="btn btn-small btn-outline" onclick="document.getElementById('importFile').click()">📥 Import</button>
-                        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJournal(event)">
-                        <button class="btn btn-small btn-danger" onclick="clearJournal()">🗑️ ล้าง</button>
-                    </div>
-                </div>
-                
-                <div class="journal-stats">
-                    <div class="journal-stat"><div class="journal-stat-value" id="stat-total">0</div><div class="journal-stat-label">ทั้งหมด</div></div>
-                    <div class="journal-stat"><div class="journal-stat-value up" id="stat-win">0</div><div class="journal-stat-label">ชนะ</div></div>
-                    <div class="journal-stat"><div class="journal-stat-value down" id="stat-loss">0</div><div class="journal-stat-label">แพ้</div></div>
-                    <div class="journal-stat"><div class="journal-stat-value" id="stat-pnl">$0</div><div class="journal-stat-label">P/L</div></div>
-                </div>
-                
-                <div class="grid">
-                    <div class="form-group"><label class="label">วันที่</label><div class="input-wrap"><input type="date" id="j-date"></div></div>
-                    <div class="form-group"><label class="label">ประเภท</label><div class="input-wrap"><select id="j-type"><option value="buy">Buy</option><option value="sell">Sell</option></select></div></div>
-                    <div class="form-group"><label class="label">Entry</label><div class="input-wrap"><input type="number" id="j-entry" step="0.01" placeholder="2650"></div></div>
-                    <div class="form-group"><label class="label">Exit</label><div class="input-wrap"><input type="number" id="j-exit" step="0.01" placeholder="2680"></div></div>
-                    <div class="form-group"><label class="label">Lot</label><div class="input-wrap"><input type="number" id="j-lot" step="0.01" value="0.1"></div></div>
-                    <div class="form-group"><label class="label">P/L ($)</label><div class="input-wrap"><input type="number" id="j-pnl" step="0.01" placeholder="300"></div></div>
-                </div>
-                <div class="form-group" style="margin-bottom:24px"><label class="label">Notes</label><div class="input-wrap"><textarea id="j-notes" placeholder="บันทึกบทเรียน..."></textarea></div></div>
-                <button class="btn" onclick="addJournal()"><span>💾</span> บันทึก</button>
-                
-                <div id="journal-list" style="margin-top:28px"></div>
-            </div>
-        </section>
+        <!-- (calculator sections moved to after chart) -->
 
         <!-- CTA - CONTACT -->
         <section class="cta">
