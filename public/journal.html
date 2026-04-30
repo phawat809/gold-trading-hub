@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Journal | Gold Trading Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<nav id="navbar"></nav>
+<div id="userBadge"></div>
+
+<div class="main-content" id="mainContent">
+    <div class="container">
+        <header class="header">
+            <h1>📓 <span class="gold">Trading Journal</span></h1>
+            <p class="subtitle">บันทึกการเทรดส่วนตัว — เก็บไว้ในเครื่องของคุณ</p>
+        </header>
+
+        <section id="journal" class="section active">
+            <div class="card" style="max-width:1000px;margin:0 auto">
+                <div class="card-head"><span class="card-icon">📓</span><h2 class="card-title">Trading Journal</h2></div>
+                <p class="card-desc">บันทึกการเทรดส่วนตัว</p>
+
+                <div class="journal-header">
+                    <div class="journal-user">
+                        <div class="journal-user-icon">👤</div>
+                        <div class="journal-user-info">
+                            <div class="journal-user-name">บัญชีของคุณ</div>
+                            <div class="journal-user-code" id="journalUserCode">-</div>
+                        </div>
+                    </div>
+                    <div class="journal-actions">
+                        <button class="btn btn-small btn-outline" id="j-export-btn">📤 Export</button>
+                        <button class="btn btn-small btn-outline" id="j-import-btn">📥 Import</button>
+                        <input type="file" id="importFile" accept=".json" style="display:none">
+                        <button class="btn btn-small btn-danger" id="j-clear-btn">🗑️ ล้าง</button>
+                    </div>
+                </div>
+
+                <div class="journal-stats">
+                    <div class="journal-stat"><div class="journal-stat-value" id="stat-total">0</div><div class="journal-stat-label">ทั้งหมด</div></div>
+                    <div class="journal-stat"><div class="journal-stat-value up" id="stat-win">0</div><div class="journal-stat-label">ชนะ</div></div>
+                    <div class="journal-stat"><div class="journal-stat-value down" id="stat-loss">0</div><div class="journal-stat-label">แพ้</div></div>
+                    <div class="journal-stat"><div class="journal-stat-value" id="stat-pnl">$0</div><div class="journal-stat-label">P/L</div></div>
+                </div>
+
+                <div class="grid">
+                    <div class="form-group"><label class="label">วันที่</label><div class="input-wrap"><input type="date" id="j-date"></div></div>
+                    <div class="form-group"><label class="label">ประเภท</label><div class="input-wrap"><select id="j-type"><option value="buy">Buy</option><option value="sell">Sell</option></select></div></div>
+                    <div class="form-group"><label class="label">Entry</label><div class="input-wrap"><input type="number" id="j-entry" step="0.01" placeholder="2650"></div></div>
+                    <div class="form-group"><label class="label">Exit</label><div class="input-wrap"><input type="number" id="j-exit" step="0.01" placeholder="2680"></div></div>
+                    <div class="form-group"><label class="label">Lot</label><div class="input-wrap"><input type="number" id="j-lot" step="0.01" value="0.1"></div></div>
+                    <div class="form-group"><label class="label">P/L ($)</label><div class="input-wrap"><input type="number" id="j-pnl" step="0.01" placeholder="300"></div></div>
+                </div>
+                <div class="form-group" style="margin-bottom:24px"><label class="label">Notes</label><div class="input-wrap"><textarea id="j-notes" placeholder="บันทึกบทเรียน..."></textarea></div></div>
+                <button class="btn" id="j-add-btn"><span>💾</span> บันทึก</button>
+
+                <div id="journal-list" style="margin-top:28px"></div>
+            </div>
+        </section>
+
+        <footer class="footer">© 2026 Gold Trading Hub</footer>
+    </div>
+</div>
+
+<script src="/js/auth.js"></script>
+<script src="/js/navbar.js"></script>
+<script src="/js/journal.js"></script>
+</body>
+</html>

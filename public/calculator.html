@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องมือคำนวณ | Gold Trading Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<nav id="navbar"></nav>
+<div id="userBadge"></div>
+
+<div class="main-content" id="mainContent">
+    <div class="container">
+        <header class="header">
+            <h1>🧮 <span class="gold">เครื่องมือคำนวณ</span></h1>
+            <p class="subtitle">Position Size + Risk/Reward + Compound</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab active" data-tab-target="position"><span>📐</span> Position Size</button>
+            <button class="tab" data-tab-target="risk"><span>⚖️</span> Risk/Reward</button>
+            <button class="tab" data-tab-target="compound"><span>📈</span> Compound</button>
+        </nav>
+
+        <section id="position" class="section active">
+            <div class="card" style="max-width:900px;margin:0 auto">
+                <div class="card-head"><span class="card-icon">📐</span><h2 class="card-title">Position Size Calculator</h2></div>
+                <p class="card-desc">คำนวณ Lot Size ตาม Risk %</p>
+                <div class="grid">
+                    <div class="form-group"><label class="label">ขนาดบัญชี</label><div class="input-wrap"><input type="number" id="p-bal" value="10000"><span class="suffix">USD</span></div></div>
+                    <div class="form-group"><label class="label">Risk ต่อออร์เดอร์</label><div class="input-wrap"><input type="number" id="p-risk" value="2" step="0.1"><span class="suffix">%</span></div></div>
+                    <div class="form-group"><label class="label">Stop Loss</label><div class="input-wrap"><input type="number" id="p-sl" value="50"><span class="suffix">pips</span></div></div>
+                    <div class="form-group"><label class="label">Take Profit</label><div class="input-wrap"><input type="number" id="p-tp" value="100"><span class="suffix">pips</span></div></div>
+                    <div class="form-group"><label class="label">Pip Value (1 Lot)</label><div class="input-wrap"><input type="number" id="p-pip" value="10" step="0.1"><span class="suffix">$/pip</span></div></div>
+                </div>
+                <button class="btn" id="p-calc-btn"><span>⚡</span> คำนวณ</button>
+                <div class="results" id="p-res" style="display:none">
+                    <div class="results-title">📊 ผลลัพธ์</div>
+                    <div class="res-grid">
+                        <div class="res-box hl"><div class="res-label">Position Size</div><div class="res-val" id="p-lot">0</div></div>
+                        <div class="res-box"><div class="res-label">เงินที่ Risk</div><div class="res-val" id="p-amt">$0</div></div>
+                        <div class="res-box"><div class="res-label">ถ้าโดน SL</div><div class="res-val down" id="p-loss">-$0</div></div>
+                        <div class="res-box" style="background:var(--green-dim);border-color:var(--green)"><div class="res-label">ถ้าถึง TP</div><div class="res-val up" id="p-profit">+$0</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="risk" class="section">
+            <div class="card" style="max-width:800px;margin:0 auto">
+                <div class="card-head"><span class="card-icon">⚖️</span><h2 class="card-title">Risk/Reward Calculator</h2></div>
+                <p class="card-desc">คำนวณ RR Ratio</p>
+                <div class="grid">
+                    <div class="form-group"><label class="label">Entry</label><div class="input-wrap"><input type="number" id="r-entry" value="2650" step="0.01"></div></div>
+                    <div class="form-group"><label class="label">Stop Loss</label><div class="input-wrap"><input type="number" id="r-sl" value="2630" step="0.01"></div></div>
+                    <div class="form-group"><label class="label">Take Profit</label><div class="input-wrap"><input type="number" id="r-tp" value="2700" step="0.01"></div></div>
+                    <div class="form-group"><label class="label">Position Type</label><div class="input-wrap"><select id="r-type"><option value="buy">Buy</option><option value="sell">Sell</option></select></div></div>
+                </div>
+                <button class="btn" id="r-calc-btn"><span>⚡</span> คำนวณ</button>
+                <div class="results" id="r-res" style="display:none">
+                    <div class="results-title">📊 ผลลัพธ์</div>
+                    <div class="res-grid">
+                        <div class="res-box hl"><div class="res-label">Risk:Reward</div><div class="res-val" id="r-ratio">1:0</div></div>
+                        <div class="res-box"><div class="res-label">Risk (pips)</div><div class="res-val down" id="r-risk">0</div></div>
+                        <div class="res-box"><div class="res-label">Reward (pips)</div><div class="res-val up" id="r-reward">0</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="compound" class="section">
+            <div class="card" style="max-width:800px;margin:0 auto">
+                <div class="card-head"><span class="card-icon">📈</span><h2 class="card-title">Compound Calculator</h2></div>
+                <p class="card-desc">คำนวณดอกเบี้ยทบต้น</p>
+                <div class="grid">
+                    <div class="form-group"><label class="label">เงินต้น</label><div class="input-wrap"><input type="number" id="c-start" value="1000"><span class="suffix">USD</span></div></div>
+                    <div class="form-group"><label class="label">กำไร/เดือน</label><div class="input-wrap"><input type="number" id="c-mon" value="10" step="0.1"><span class="suffix">%</span></div></div>
+                    <div class="form-group"><label class="label">ระยะเวลา</label><div class="input-wrap"><input type="number" id="c-months" value="12"><span class="suffix">เดือน</span></div></div>
+                </div>
+                <button class="btn" id="c-calc-btn"><span>⚡</span> คำนวณ</button>
+                <div class="results" id="c-res" style="display:none">
+                    <div class="results-title">📊 ผลลัพธ์</div>
+                    <div class="res-grid">
+                        <div class="res-box hl"><div class="res-label">ยอดสุดท้าย</div><div class="res-val" id="c-final">$0</div></div>
+                        <div class="res-box"><div class="res-label">กำไรทั้งหมด</div><div class="res-val up" id="c-profit">$0</div></div>
+                        <div class="res-box"><div class="res-label">% เติบโต</div><div class="res-val up" id="c-grow">0%</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">© 2026 Gold Trading Hub</footer>
+    </div>
+</div>
+
+<script src="/js/auth.js"></script>
+<script src="/js/navbar.js"></script>
+<script src="/js/calculator.js"></script>
+</body>
+</html>

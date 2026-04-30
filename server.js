@@ -6,6 +6,14 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Pretty routes (no .html suffix)
+const PAGE_ROUTES = ['patterns', 'journal', 'track-record', 'calculator', 'contact'];
+PAGE_ROUTES.forEach(function(name) {
+  app.get('/' + name, function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', name + '.html'));
+  });
+});
+
 const NOCODB_API_URL = (process.env.NOCODB_API_URL || '').replace(/\/+$/, '');
 const NOCODB_API_TOKEN = process.env.NOCODB_API_TOKEN;
 const NOCODB_TABLE_ID = process.env.NOCODB_TABLE_ID;
