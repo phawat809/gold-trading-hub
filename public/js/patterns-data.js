@@ -11,6 +11,7 @@ window.PATTERNS = [
         nameEn: 'Pattern 1 — Bullish Setup',
         timeframe: 'รอข้อมูล',
         image: '/patterns/pattern-1-buy.webp',
+        targetWinRate: 85,
         rules: {
             entry: 'รอข้อมูล',
             sl: 'รอข้อมูล',
@@ -26,6 +27,7 @@ window.PATTERNS = [
         nameEn: 'Pattern 1 — Bearish Setup',
         timeframe: 'รอข้อมูล',
         image: '/patterns/pattern-1-sell.webp',
+        targetWinRate: 85,
         rules: {
             entry: 'รอข้อมูล',
             sl: 'รอข้อมูล',
@@ -41,6 +43,7 @@ window.PATTERNS = [
         nameEn: 'Pattern 2 — Bullish Setup',
         timeframe: 'รอข้อมูล',
         image: '/patterns/pattern-2-buy.webp',
+        targetWinRate: 85,
         rules: {
             entry: 'รอข้อมูล',
             sl: 'รอข้อมูล',
@@ -56,6 +59,7 @@ window.PATTERNS = [
         nameEn: 'Pattern 2 — Bearish Setup',
         timeframe: 'รอข้อมูล',
         image: '/patterns/pattern-2-sell.webp',
+        targetWinRate: 85,
         rules: {
             entry: 'รอข้อมูล',
             sl: 'รอข้อมูล',
@@ -71,6 +75,7 @@ window.PATTERNS = [
         nameEn: 'Pattern 3 — Bullish Setup',
         timeframe: 'รอข้อมูล',
         image: '/patterns/pattern-3-buy.webp',
+        targetWinRate: 85,
         rules: {
             entry: 'รอข้อมูล',
             sl: 'รอข้อมูล',
@@ -86,6 +91,7 @@ window.PATTERNS = [
         nameEn: 'Pattern 3 — Bearish Setup',
         timeframe: 'รอข้อมูล',
         image: '/patterns/pattern-3-sell.webp',
+        targetWinRate: 85,
         rules: {
             entry: 'รอข้อมูล',
             sl: 'รอข้อมูล',

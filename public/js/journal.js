@@ -21,6 +21,7 @@
 
     function addJournal() {
         const d = document.getElementById('j-date').value;
+        const pattern = document.getElementById('j-pattern').value;
         const type = document.getElementById('j-type').value;
         const entry = document.getElementById('j-entry').value;
         const exit = document.getElementById('j-exit').value;
@@ -35,7 +36,7 @@
 
         journalEntries.unshift({
             id: Date.now(),
-            d: d, type: type, entry: entry, exit: exit, lot: lot, pnl: pnl, notes: notes
+            d: d, pattern: pattern, type: type, entry: entry, exit: exit, lot: lot, pnl: pnl, notes: notes
         });
 
         saveJournalData();
@@ -72,6 +73,12 @@
         pnlEl.className = 'journal-stat-value ' + (totalPnl >= 0 ? 'up' : 'down');
     }
 
+    function getPatternLabel(patternId) {
+        if (!patternId || !window.PATTERNS) return '';
+        const p = window.PATTERNS.find(function(x) { return x.id === patternId; });
+        return p ? p.nameTh : '';
+    }
+
     function renderJournal() {
         const list = document.getElementById('journal-list');
 
@@ -85,10 +92,11 @@
             const e = journalEntries[i];
             const resultClass = e.pnl >= 0 ? 'win' : 'loss';
             const pnlText = (e.pnl >= 0 ? '+' : '') + '$' + e.pnl.toFixed(2);
+            const patternLabel = getPatternLabel(e.pattern);
 
             html += '<div class="journal-entry">';
             html += '<div class="entry-head">';
-            html += '<span class="entry-date">📅 ' + e.d + '</span>';
+            html += '<span class="entry-date">📅 ' + e.d + (patternLabel ? ' · <span style="color:var(--gold)">📈 ' + patternLabel + '</span>' : '') + '</span>';
             html += '<div style="display:flex;align-items:center;gap:12px">';
             html += '<span class="entry-result ' + resultClass + '">' + pnlText + '</span>';
             html += '<button class="entry-delete" data-entry-id="' + e.id + '">🗑️</button>';
@@ -182,9 +190,25 @@
         }
     }
 
+    function populatePatternDropdown() {
+        const sel = document.getElementById('j-pattern');
+        if (!sel || !window.PATTERNS) return;
+        const sorted = window.PATTERNS.slice().sort(function(a, b) {
+            if (a.number !== b.number) return a.number - b.number;
+            return a.direction === 'buy' ? -1 : 1;
+        });
+        const options = sorted.map(function(p) {
+            const arrow = p.direction === 'buy' ? '🟢' : '🔴';
+            return '<option value="' + p.id + '">' + arrow + ' ' + p.nameTh + '</option>';
+        }).join('');
+        sel.insertAdjacentHTML('beforeend', options);
+    }
+
     function bindHandlers() {
         const dateEl = document.getElementById('j-date');
         if (dateEl) dateEl.valueAsDate = new Date();
+
+        populatePatternDropdown();
 
         const addBtn = document.getElementById('j-add-btn');
         if (addBtn) addBtn.addEventListener('click', addJournal);

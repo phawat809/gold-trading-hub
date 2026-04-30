@@ -450,3 +450,36 @@
         .pattern-note{padding:10px 12px;background:var(--gold-dim);border:1px dashed var(--gold);border-radius:10px;font-size:12px;color:var(--gray);line-height:1.6;margin-top:4px}
         .pattern-disclaimer{margin-top:32px;padding:16px 20px;background:var(--bg2);border:1px dashed var(--border);border-radius:12px;font-size:12px;color:var(--gray);line-height:1.7;text-align:center}
         .pattern-disclaimer strong{color:var(--gold)}
+
+        /* ============ TRACK RECORD ============ */
+        .tr-overall-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
+        .tr-stat{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+        .tr-stat.hl{background:var(--gold-dim);border-color:var(--gold)}
+        .tr-stat-label{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+        .tr-stat-value{font-size:24px;font-weight:800;font-family:'JetBrains Mono',monospace}
+        .tr-stat-value.up{color:var(--green)}
+        .tr-stat-value.down{color:var(--red)}
+        .tr-empty{text-align:center;padding:40px 20px;grid-column:1/-1}
+        .tr-pattern-list{display:flex;flex-direction:column;gap:14px}
+        .tr-pattern-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px}
+        .tr-pattern-card.buy{border-left:4px solid var(--green)}
+        .tr-pattern-card.sell{border-left:4px solid var(--red)}
+        .tr-pattern-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+        .tr-pattern-icon{font-size:18px}
+        .tr-pattern-name{flex:1;font-size:15px;font-weight:700;color:var(--white)}
+        .tr-pattern-target{font-size:11px;color:var(--gold);background:var(--gold-dim);padding:4px 10px;border-radius:12px;font-weight:700}
+        .tr-pattern-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:12px}
+        .tr-mini{background:var(--card);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+        .tr-mini-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+        .tr-mini-value{font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--white)}
+        .tr-mini-value .up{color:var(--green)}
+        .tr-mini-value .down{color:var(--red)}
+        .tr-mini-value.up{color:var(--green)}
+        .tr-mini-value.down{color:var(--red)}
+        .tr-progress-wrap{margin-top:6px}
+        .tr-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);margin-bottom:6px}
+        .tr-progress-label .up{color:var(--green);font-weight:700}
+        .tr-progress-label .down{color:var(--gold);font-weight:600}
+        .tr-progress-bar{height:6px;background:var(--card);border-radius:3px;overflow:hidden}
+        .tr-progress-fill{height:100%;background:linear-gradient(90deg,#ff9800,#ffd700);transition:width .6s ease}
+        .tr-progress-fill.success{background:linear-gradient(90deg,#00c853,#00e676)}

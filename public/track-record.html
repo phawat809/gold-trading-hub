@@ -16,17 +16,31 @@
     <div class="container">
         <header class="header">
             <h1>🏆 <span class="gold">Track Record</span></h1>
-            <p class="subtitle">สถิติของผู้ใช้ระบบ — พิสูจน์ Win Rate ของแต่ละ Pattern</p>
+            <p class="subtitle">สถิติการเทรดของคุณ — แยกตาม Pattern</p>
         </header>
 
-        <div class="widget-card" style="padding:60px 40px;text-align:center">
-            <div style="font-size:64px;margin-bottom:16px">📊</div>
-            <h2 style="font-size:24px;font-weight:800;margin-bottom:12px">เร็วๆ นี้</h2>
-            <p style="color:var(--gray);font-size:16px;line-height:1.7;max-width:550px;margin:0 auto">
-                สรุปสถิติการเทรดตามภาพจำ — แยกตาม Pattern และทิศทาง<br>
-                <strong style="color:var(--gold)">เป้าหมาย Win Rate 80–90%</strong> เมื่อเทรดตามกฎ<br>
-                <span style="font-size:13px;color:var(--dim)">รอข้อมูลจากผู้ใช้ระบบ</span>
-            </p>
+        <div class="widget-card" style="padding:18px 22px;margin-bottom:24px;background:linear-gradient(135deg,rgba(255,215,0,0.06),var(--card));border:1px solid var(--border)">
+            <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap">
+                <span style="font-size:28px">📊</span>
+                <div style="flex:1;min-width:240px;font-size:13px;color:var(--gray);line-height:1.7">
+                    สถิติคำนวณจาก <a href="/journal" style="color:var(--gold);text-decoration:none;font-weight:600">📓 Journal</a> ของคุณ — ยิ่งบันทึกเยอะ ตัวเลขยิ่งแม่น<br>
+                    เป้าหมายของแต่ละ Pattern คือ <strong style="color:var(--white)">Win Rate 80–90%</strong> เมื่อเทรดตามกฎอย่างเคร่งครัด
+                </div>
+            </div>
+        </div>
+
+        <div class="widget-card" style="padding:24px;margin-bottom:24px">
+            <h3 style="font-size:18px;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:10px"><span>📈</span> ภาพรวม</h3>
+            <div class="tr-overall-grid" id="tr-overall">
+                <!-- track-record.js renders here -->
+            </div>
+        </div>
+
+        <div class="widget-card" style="padding:24px">
+            <h3 style="font-size:18px;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:10px"><span>🎯</span> แยกตาม Pattern</h3>
+            <div class="tr-pattern-list" id="tr-by-pattern">
+                <!-- track-record.js renders here -->
+            </div>
         </div>
 
         <footer class="footer">© 2026 Gold Trading Hub</footer>
@@ -35,5 +49,7 @@
 
 <script src="/js/auth.js"></script>
 <script src="/js/navbar.js"></script>
+<script src="/js/patterns-data.js"></script>
+<script src="/js/track-record.js"></script>
 </body>
 </html>
