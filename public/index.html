@@ -454,11 +454,11 @@
             <h2 class="lock-title">Gold Trading Hub</h2>
             <p class="lock-desc">เครื่องมือเทรดทองคำระดับ Pro<br>สำหรับสมาชิก Exness IB เท่านั้น</p>
             <div class="lock-features">
-                <div class="lock-feat"><span>📊</span> กราฟ Real-time</div>
-                <div class="lock-feat"><span>📰</span> ข่าว Live</div>
-                <div class="lock-feat"><span>🎯</span> สัญญาณ Buy/Sell</div>
+                <div class="lock-feat"><span>🤖</span> AI Suggestion</div>
+                <div class="lock-feat"><span>🎓</span> เคล็ดลับเทรดทอง</div>
                 <div class="lock-feat"><span>📐</span> Position Calculator</div>
                 <div class="lock-feat"><span>⚖️</span> Risk/Reward</div>
+                <div class="lock-feat"><span>📈</span> Compound Calculator</div>
                 <div class="lock-feat"><span>📓</span> Trading Journal</div>
             </div>
             <div class="lock-tabs">
@@ -517,10 +517,7 @@
             <button class="navbar-toggle" onclick="toggleNavMenu()" id="navToggle">☰</button>
             <div class="navbar-menu" id="navMenu">
                 <a href="#aiOutlookWidget" class="nav-link" onclick="smoothScroll(event, 'aiOutlookWidget')"><span class="nav-icon">🤖</span> AI Suggestion</a>
-                <a href="#charts" class="nav-link" onclick="smoothScroll(event, 'charts')"><span class="nav-icon">📊</span> กราฟ</a>
-                <a href="#analysis" class="nav-link" onclick="smoothScroll(event, 'analysis')"><span class="nav-icon">📰</span> ข่าว</a>
                 <a href="#tips" class="nav-link" onclick="smoothScroll(event, 'tips')"><span class="nav-icon">🎓</span> เคล็ดลับ</a>
-                <a href="#patterns" class="nav-link" onclick="smoothScroll(event, 'patterns')"><span class="nav-icon">📈</span> กราฟแพทเทิร์น</a>
                 <a href="#calculator" class="nav-link" onclick="smoothScroll(event, 'calculator')"><span class="nav-icon">🧮</span> เครื่องมือคำนวณ/จดบันทึก</a>
             </div>
         </div>
@@ -538,7 +535,7 @@
                 <span class="logo-text">Gold Trading Hub</span>
             </div>
             <h1>เครื่องมือเทรด <span class="gold">ทองคำ XAU/USD</span></h1>
-            <p class="subtitle">กราฟ Real-time + ข่าว Live + สัญญาณ Buy/Sell + เครื่องมือคำนวณ</p>
+            <p class="subtitle">AI Suggestion + เคล็ดลับเทรดทอง + เครื่องมือคำนวณ/จดบันทึก</p>
         </header>
 
         <!-- TICKER TAPE -->
@@ -571,41 +568,6 @@
                 </div>
                 <div class="ai-outlook-content" id="outlookContent">
                     <p>กำลังโหลดบทวิเคราะห์...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- ROW 1: CHART + TECHNICAL -->
-        <div class="grid-2" id="charts">
-            <div class="widget-card">
-                <div class="widget-header">
-                    <span style="font-size:28px">📊</span>
-                    <span class="widget-title">XAU/USD Chart</span>
-                    <span class="widget-badge">● LIVE</span>
-                </div>
-                <div style="height:650px">
-                    <div class="tradingview-widget-container" style="height:100%">
-                        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-                        {"autosize":true,"symbol":"OANDA:XAUUSD","interval":"60","timezone":"Asia/Bangkok","theme":"dark","style":"1","locale":"th_TH","enable_publishing":false,"hide_top_toolbar":false,"hide_legend":false,"save_image":false,"hide_volume":false,"support_host":"https://www.tradingview.com"}
-                        </script>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="widget-card">
-                <div class="widget-header">
-                    <span style="font-size:28px">🎯</span>
-                    <span class="widget-title">สัญญาณ Buy/Sell</span>
-                    <span class="widget-badge">● LIVE</span>
-                </div>
-                <div style="height:650px">
-                    <div class="tradingview-widget-container" style="height:100%">
-                        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-                        {"interval":"1h","width":"100%","isTransparent":true,"height":"100%","symbol":"OANDA:XAUUSD","showIntervalTabs":true,"displayMode":"multiple","locale":"th_TH","colorTheme":"dark"}
-                        </script>
-                    </div>
                 </div>
             </div>
         </div>
@@ -732,87 +694,14 @@
             </div>
         </section>
 
-        <!-- ROW 2: NEWS + CALENDAR -->
-        <div class="grid-2">
-            <!-- GOLD NEWS -->
-            <div class="widget-card" id="analysis">
-                <div class="widget-header">
-                    <span style="font-size:28px">📰</span>
-                    <span class="widget-title">ข่าวทองคำ Live</span>
-                    <span class="widget-badge">● LIVE</span>
-                </div>
-                <div style="height:600px">
-                    <!-- TradingView Timeline Widget -->
-                    <div class="tradingview-widget-container" style="height:100%">
-                        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-                        {
-                            "feedMode": "symbol",
-                            "symbol": "OANDA:XAUUSD",
-                            "isTransparent": true,
-                            "displayMode": "regular",
-                            "width": "100%",
-                            "height": "100%",
-                            "colorTheme": "dark",
-                            "locale": "th_TH"
-                        }
-                        </script>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- GOLD TRADING TIPS -->
-            <div class="widget-card" id="tips">
+        <!-- GOLD TRADING TIPS -->
+        <div class="widget-card" id="tips">
                 <div class="widget-header">
                     <span style="font-size:28px">🎓</span>
                     <span class="widget-title">เคล็ดลับเทรดทองคำ</span>
                     <span class="widget-badge" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff">PRO TIPS</span>
                 </div>
                 <div class="tips-container">
-                    
-                    <!-- TIP 1: Trading Sessions -->
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">⏰</span>
-                            <h3 class="tip-title">ช่วงเวลาทองเคลื่อนไหวมากที่สุด</h3>
-                        </div>
-                        <div class="tip-content">
-                            <div class="session-timeline">
-                                <div class="session sydney">
-                                    <div class="session-time">04:00 - 13:00</div>
-                                    <div class="session-name">🇦🇺 Sydney</div>
-                                    <div class="session-vol">Volume: ต่ำ</div>
-                                    <div class="session-tip">❌ ไม่แนะนำเทรด</div>
-                                </div>
-                                <div class="session tokyo">
-                                    <div class="session-time">06:00 - 15:00</div>
-                                    <div class="session-name">🇯🇵 Tokyo</div>
-                                    <div class="session-vol">Volume: ปานกลาง</div>
-                                    <div class="session-tip">⚠️ ระวัง Spread กว้าง</div>
-                                </div>
-                                <div class="session london active">
-                                    <div class="session-time">14:00 - 23:00</div>
-                                    <div class="session-name">🇬🇧 London</div>
-                                    <div class="session-vol">Volume: สูงมาก</div>
-                                    <div class="session-tip">✅ แนะนำเทรด!</div>
-                                </div>
-                                <div class="session newyork active">
-                                    <div class="session-time">19:00 - 04:00</div>
-                                    <div class="session-name">🇺🇸 New York</div>
-                                    <div class="session-vol">Volume: สูงสุด</div>
-                                    <div class="session-tip">✅ แนะนำเทรด!</div>
-                                </div>
-                            </div>
-                            <div class="tip-highlight">
-                                <span class="highlight-icon">💡</span>
-                                <div class="highlight-text">
-                                    <strong>ช่วงทองคำเคลื่อนไหวมากที่สุด:</strong><br>
-                                    🔥 <strong>19:00 - 23:00 น.</strong> (London + NY Overlap)<br>
-                                    เป็นช่วงที่ Volume สูงสุด ราคาวิ่งเร็ว โอกาสทำกำไรมากที่สุด!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     
                     <!-- TIP 2: Best Trading Hours -->
                     <div class="tip-card">
@@ -881,19 +770,9 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="fed-important">
-                                <div class="important-title">⚠️ ข่าวสำคัญที่ต้องจับตา (เรียงตามผลกระทบ)</div>
-                                <div class="news-impact-list">
-                                    <div class="news-item extreme"><span class="impact-level">🔴🔴🔴</span> FOMC / Fed Interest Rate Decision</div>
-                                    <div class="news-item extreme"><span class="impact-level">🔴🔴🔴</span> Non-Farm Payrolls (NFP)</div>
-                                    <div class="news-item high"><span class="impact-level">🔴🔴</span> CPI / Core CPI (เงินเฟ้อ)</div>
-                                    <div class="news-item high"><span class="impact-level">🔴🔴</span> PCE Price Index</div>
-                                    <div class="news-item medium"><span class="impact-level">🟠</span> GDP, Unemployment Claims, ISM PMI</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    
+
                     <!-- TIP 4: Money Management -->
                     <div class="tip-card">
                         <div class="tip-header">
@@ -973,281 +852,8 @@
                     </div>
                     
                 </div>
-            </div>
         </div>
 
-        <!-- CHART PATTERNS EDUCATION -->
-        <div class="widget-card pattern-section" id="patterns">
-            <div class="widget-header">
-                <span style="font-size:28px">📚</span>
-                <span class="widget-title">เจอแบบนี้ เทรดอย่างไร? (Chart Pattern Guide)</span>
-                <span class="widget-badge" style="background:var(--gold-dim);color:var(--gold)">EDUCATION</span>
-            </div>
-            <div class="widget-body">
-                <h2 class="section-title">📈 รูปแบบกราฟ (Chart Patterns)</h2>
-                <p class="section-subtitle">เจอรูปแบบเหล่านี้บนกราฟ ให้เทรดตามทิศทางที่แนะนำ</p>
-                
-                <div class="pattern-grid">
-                    <!-- Double Bottom -->
-                    <div class="pattern-card">
-                        <div class="pattern-visual">
-                            <span class="pattern-signal buy">🟢 BUY</span>
-                            <svg viewBox="0 0 300 150">
-                                <defs>
-                                    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#00e676;stop-opacity:0.3"/>
-                                        <stop offset="100%" style="stop-color:#00e676;stop-opacity:0"/>
-                                    </linearGradient>
-                                </defs>
-                                <path d="M20 40 L70 110 L120 60 L170 110 L220 40 L280 25" fill="url(#greenGrad)"/>
-                                <path d="M20 40 L70 110 L120 60 L170 110 L220 40 L280 25" fill="none" stroke="#00e676" stroke-width="3" stroke-linecap="round"/>
-                                <line x1="70" y1="110" x2="170" y2="110" stroke="#ffd700" stroke-width="2" stroke-dasharray="5"/>
-                                <line x1="120" y1="60" x2="280" y2="60" stroke="#4dabf7" stroke-width="1.5" stroke-dasharray="4"/>
-                                <circle cx="70" cy="110" r="6" fill="#ffd700"/>
-                                <circle cx="170" cy="110" r="6" fill="#ffd700"/>
-                                <text x="120" y="130" fill="#ffd700" font-size="11" text-anchor="middle" font-weight="bold">Support Zone</text>
-                                <text x="250" y="55" fill="#4dabf7" font-size="10" text-anchor="middle">Neckline</text>
-                            </svg>
-                        </div>
-                        <div class="pattern-content">
-                            <div class="pattern-name">Double Bottom</div>
-                            <div class="pattern-name-th">ก้นสองก้น / W Pattern</div>
-                            <p class="pattern-desc">กราฟลงมาทำจุดต่ำสุด 2 ครั้งที่ระดับใกล้เคียงกัน แสดงว่าแนวรับแข็งแกร่ง <strong>สัญญาณกลับตัวขึ้น</strong></p>
-                            <div class="pattern-action">
-                                <span class="pattern-tip entry">📍 Entry: รอราคาทะลุ Neckline แล้วค่อย Buy</span>
-                                <span class="pattern-tip sl">🛑 SL: วางใต้ก้นที่ 2</span>
-                                <span class="pattern-tip tp">🎯 TP: ระยะจากก้นถึง Neckline</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Double Top -->
-                    <div class="pattern-card">
-                        <div class="pattern-visual">
-                            <span class="pattern-signal sell">🔴 SELL</span>
-                            <svg viewBox="0 0 300 150">
-                                <defs>
-                                    <linearGradient id="redGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-                                        <stop offset="0%" style="stop-color:#ff5252;stop-opacity:0"/>
-                                        <stop offset="100%" style="stop-color:#ff5252;stop-opacity:0.3"/>
-                                    </linearGradient>
-                                </defs>
-                                <path d="M20 110 L70 40 L120 90 L170 40 L220 110 L280 125" fill="url(#redGrad)"/>
-                                <path d="M20 110 L70 40 L120 90 L170 40 L220 110 L280 125" fill="none" stroke="#ff5252" stroke-width="3" stroke-linecap="round"/>
-                                <line x1="70" y1="40" x2="170" y2="40" stroke="#ffd700" stroke-width="2" stroke-dasharray="5"/>
-                                <line x1="120" y1="90" x2="280" y2="90" stroke="#4dabf7" stroke-width="1.5" stroke-dasharray="4"/>
-                                <circle cx="70" cy="40" r="6" fill="#ffd700"/>
-                                <circle cx="170" cy="40" r="6" fill="#ffd700"/>
-                                <text x="120" y="30" fill="#ffd700" font-size="11" text-anchor="middle" font-weight="bold">Resistance Zone</text>
-                                <text x="250" y="85" fill="#4dabf7" font-size="10" text-anchor="middle">Neckline</text>
-                            </svg>
-                        </div>
-                        <div class="pattern-content">
-                            <div class="pattern-name">Double Top</div>
-                            <div class="pattern-name-th">ยอดสองยอด / M Pattern</div>
-                            <p class="pattern-desc">กราฟขึ้นไปทำจุดสูงสุด 2 ครั้งที่ระดับใกล้เคียงกัน แสดงว่าแนวต้านแข็งแกร่ง <strong>สัญญาณกลับตัวลง</strong></p>
-                            <div class="pattern-action">
-                                <span class="pattern-tip entry">📍 Entry: รอราคาหลุด Neckline แล้วค่อย Sell</span>
-                                <span class="pattern-tip sl">🛑 SL: วางเหนือยอดที่ 2</span>
-                                <span class="pattern-tip tp">🎯 TP: ระยะจากยอดถึง Neckline</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Head & Shoulders -->
-                    <div class="pattern-card">
-                        <div class="pattern-visual">
-                            <span class="pattern-signal sell">🔴 SELL</span>
-                            <svg viewBox="0 0 300 150">
-                                <path d="M15 110 L50 70 L75 90 L115 30 L155 90 L180 70 L215 110 L280 120" fill="none" stroke="#ff5252" stroke-width="3" stroke-linecap="round"/>
-                                <line x1="75" y1="90" x2="180" y2="90" stroke="#4dabf7" stroke-width="2" stroke-dasharray="5"/>
-                                <circle cx="50" cy="70" r="5" fill="#9e9e9e"/>
-                                <circle cx="115" cy="30" r="7" fill="#ffd700"/>
-                                <circle cx="180" cy="70" r="5" fill="#9e9e9e"/>
-                                <text x="50" y="60" fill="#9e9e9e" font-size="9" text-anchor="middle">ไหล่ซ้าย</text>
-                                <text x="115" y="22" fill="#ffd700" font-size="10" text-anchor="middle" font-weight="bold">หัว</text>
-                                <text x="180" y="60" fill="#9e9e9e" font-size="9" text-anchor="middle">ไหล่ขวา</text>
-                                <text x="127" y="105" fill="#4dabf7" font-size="10" text-anchor="middle">Neckline</text>
-                            </svg>
-                        </div>
-                        <div class="pattern-content">
-                            <div class="pattern-name">Head & Shoulders</div>
-                            <div class="pattern-name-th">รูปแบบหัวไหล่</div>
-                            <p class="pattern-desc">มียอด 3 ยอด โดยยอดกลาง (หัว) สูงกว่ายอดข้าง (ไหล่) <strong>สัญญาณกลับตัวลงที่แข็งแกร่ง</strong></p>
-                            <div class="pattern-action">
-                                <span class="pattern-tip entry">📍 Entry: รอราคาหลุด Neckline แล้ว Sell</span>
-                                <span class="pattern-tip sl">🛑 SL: วางเหนือไหล่ขวา</span>
-                                <span class="pattern-tip tp">🎯 TP: ระยะจากหัวถึง Neckline</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Inverse Head & Shoulders -->
-                    <div class="pattern-card">
-                        <div class="pattern-visual">
-                            <span class="pattern-signal buy">🟢 BUY</span>
-                            <svg viewBox="0 0 300 150">
-                                <path d="M15 40 L50 80 L75 60 L115 120 L155 60 L180 80 L215 40 L280 30" fill="none" stroke="#00e676" stroke-width="3" stroke-linecap="round"/>
-                                <line x1="75" y1="60" x2="180" y2="60" stroke="#4dabf7" stroke-width="2" stroke-dasharray="5"/>
-                                <circle cx="50" cy="80" r="5" fill="#9e9e9e"/>
-                                <circle cx="115" cy="120" r="7" fill="#ffd700"/>
-                                <circle cx="180" cy="80" r="5" fill="#9e9e9e"/>
-                                <text x="50" y="95" fill="#9e9e9e" font-size="9" text-anchor="middle">ไหล่ซ้าย</text>
-                                <text x="115" y="137" fill="#ffd700" font-size="10" text-anchor="middle" font-weight="bold">หัว</text>
-                                <text x="180" y="95" fill="#9e9e9e" font-size="9" text-anchor="middle">ไหล่ขวา</text>
-                                <text x="127" y="52" fill="#4dabf7" font-size="10" text-anchor="middle">Neckline</text>
-                            </svg>
-                        </div>
-                        <div class="pattern-content">
-                            <div class="pattern-name">Inverse Head & Shoulders</div>
-                            <div class="pattern-name-th">หัวไหล่กลับหัว</div>
-                            <p class="pattern-desc">มีก้น 3 ก้น โดยก้นกลาง (หัว) ต่ำกว่าก้นข้าง (ไหล่) <strong>สัญญาณกลับตัวขึ้นที่แข็งแกร่ง</strong></p>
-                            <div class="pattern-action">
-                                <span class="pattern-tip entry">📍 Entry: รอราคาทะลุ Neckline แล้ว Buy</span>
-                                <span class="pattern-tip sl">🛑 SL: วางใต้ไหล่ขวา</span>
-                                <span class="pattern-tip tp">🎯 TP: ระยะจากหัวถึง Neckline</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bull Flag -->
-                    <div class="pattern-card">
-                        <div class="pattern-visual">
-                            <span class="pattern-signal buy">🟢 BUY</span>
-                            <svg viewBox="0 0 300 150">
-                                <path d="M20 130 L80 40" fill="none" stroke="#00e676" stroke-width="4" stroke-linecap="round"/>
-                                <rect x="80" y="40" width="100" height="45" fill="none" stroke="#ffd700" stroke-width="2" stroke-dasharray="5" transform="rotate(15 130 62)"/>
-                                <path d="M80 40 L100 55 L120 48 L140 60 L160 52 L180 65 L190 58" fill="none" stroke="#00e676" stroke-width="2"/>
-                                <path d="M190 58 L280 15" fill="none" stroke="#00e676" stroke-width="4" stroke-linecap="round"/>
-                                <text x="50" y="95" fill="#9e9e9e" font-size="10" text-anchor="middle">เสาธง</text>
-                                <text x="135" y="100" fill="#ffd700" font-size="10" text-anchor="middle">ธง (พักตัว)</text>
-                            </svg>
-                        </div>
-                        <div class="pattern-content">
-                            <div class="pattern-name">Bull Flag</div>
-                            <div class="pattern-name-th">ธงขาขึ้น</div>
-                            <p class="pattern-desc">หลังราคาพุ่งขึ้นแรง (เสาธง) จะพักตัวเป็นช่องเฉียงลง (ธง) ก่อนพุ่งต่อ <strong>สัญญาณ Continuation</strong></p>
-                            <div class="pattern-action">
-                                <span class="pattern-tip entry">📍 Entry: รอ Breakout ธงขึ้นแล้ว Buy</span>
-                                <span class="pattern-tip sl">🛑 SL: ใต้จุดต่ำสุดของธง</span>
-                                <span class="pattern-tip tp">🎯 TP: ระยะเท่าความยาวเสาธง</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bear Flag -->
-                    <div class="pattern-card">
-                        <div class="pattern-visual">
-                            <span class="pattern-signal sell">🔴 SELL</span>
-                            <svg viewBox="0 0 300 150">
-                                <path d="M20 20 L80 110" fill="none" stroke="#ff5252" stroke-width="4" stroke-linecap="round"/>
-                                <rect x="80" y="65" width="100" height="45" fill="none" stroke="#ffd700" stroke-width="2" stroke-dasharray="5" transform="rotate(-15 130 87)"/>
-                                <path d="M80 110 L100 95 L120 102 L140 90 L160 98 L180 85 L190 92" fill="none" stroke="#ff5252" stroke-width="2"/>
-                                <path d="M190 92 L280 135" fill="none" stroke="#ff5252" stroke-width="4" stroke-linecap="round"/>
-                                <text x="50" y="60" fill="#9e9e9e" font-size="10" text-anchor="middle">เสาธง</text>
-                                <text x="135" y="55" fill="#ffd700" font-size="10" text-anchor="middle">ธง (พักตัว)</text>
-                            </svg>
-                        </div>
-                        <div class="pattern-content">
-                            <div class="pattern-name">Bear Flag</div>
-                            <div class="pattern-name-th">ธงขาลง</div>
-                            <p class="pattern-desc">หลังราคาร่วงแรง (เสาธง) จะพักตัวเป็นช่องเฉียงขึ้น (ธง) ก่อนร่วงต่อ <strong>สัญญาณ Continuation</strong></p>
-                            <div class="pattern-action">
-                                <span class="pattern-tip entry">📍 Entry: รอ Breakdown ธงลงแล้ว Sell</span>
-                                <span class="pattern-tip sl">🛑 SL: เหนือจุดสูงสุดของธง</span>
-                                <span class="pattern-tip tp">🎯 TP: ระยะเท่าความยาวเสาธง</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Candlestick Patterns -->
-                <div class="candle-section">
-                    <h2 class="section-title">🕯️ รูปแบบแท่งเทียน (Candlestick Patterns)</h2>
-                    <p class="section-subtitle">เจอแท่งเทียนแบบนี้ บอกสัญญาณอะไร?</p>
-                    
-                    <div class="candle-grid">
-                        <div class="candle-item">
-                            <div class="candle-visual">
-                                <svg viewBox="0 0 50 100">
-                                    <rect x="10" y="10" width="30" height="80" fill="#00e676" rx="3"/>
-                                </svg>
-                            </div>
-                            <div class="candle-name">Bullish Marubozu</div>
-                            <div class="candle-name-th">แท่งเขียวไร้ไส้</div>
-                            <span class="candle-signal bullish">🟢 BUY</span>
-                            <p class="candle-desc">แรงซื้อแข็งแกร่งมาก ไม่มีไส้บน-ล่าง</p>
-                        </div>
-                        
-                        <div class="candle-item">
-                            <div class="candle-visual">
-                                <svg viewBox="0 0 50 100">
-                                    <rect x="10" y="10" width="30" height="80" fill="#ff5252" rx="3"/>
-                                </svg>
-                            </div>
-                            <div class="candle-name">Bearish Marubozu</div>
-                            <div class="candle-name-th">แท่งแดงไร้ไส้</div>
-                            <span class="candle-signal bearish">🔴 SELL</span>
-                            <p class="candle-desc">แรงขายแข็งแกร่งมาก ไม่มีไส้บน-ล่าง</p>
-                        </div>
-                        
-                        <div class="candle-item">
-                            <div class="candle-visual">
-                                <svg viewBox="0 0 50 100">
-                                    <line x1="25" y1="5" x2="25" y2="20" stroke="#00e676" stroke-width="2"/>
-                                    <rect x="10" y="20" width="30" height="18" fill="#00e676" rx="2"/>
-                                    <line x1="25" y1="38" x2="25" y2="95" stroke="#00e676" stroke-width="2"/>
-                                </svg>
-                            </div>
-                            <div class="candle-name">Hammer</div>
-                            <div class="candle-name-th">ค้อน (เกิดที่ก้น)</div>
-                            <span class="candle-signal bullish">🟢 BUY</span>
-                            <p class="candle-desc">ไส้ล่างยาว 2x ตัว = สัญญาณกลับตัวขึ้น</p>
-                        </div>
-                        
-                        <div class="candle-item">
-                            <div class="candle-visual">
-                                <svg viewBox="0 0 50 100">
-                                    <line x1="25" y1="5" x2="25" y2="62" stroke="#ff5252" stroke-width="2"/>
-                                    <rect x="10" y="62" width="30" height="18" fill="#ff5252" rx="2"/>
-                                    <line x1="25" y1="80" x2="25" y2="95" stroke="#ff5252" stroke-width="2"/>
-                                </svg>
-                            </div>
-                            <div class="candle-name">Shooting Star</div>
-                            <div class="candle-name-th">ดาวตก (เกิดที่ยอด)</div>
-                            <span class="candle-signal bearish">🔴 SELL</span>
-                            <p class="candle-desc">ไส้บนยาว 2x ตัว = สัญญาณกลับตัวลง</p>
-                        </div>
-                        
-                        <div class="candle-item">
-                            <div class="candle-visual">
-                                <svg viewBox="0 0 50 100">
-                                    <line x1="25" y1="10" x2="25" y2="90" stroke="#9e9e9e" stroke-width="2"/>
-                                    <rect x="10" y="43" width="30" height="14" fill="none" stroke="#ffd700" stroke-width="2" rx="2"/>
-                                </svg>
-                            </div>
-                            <div class="candle-name">Doji</div>
-                            <div class="candle-name-th">โดจิ (ลังเล)</div>
-                            <span class="candle-signal neutral">⚠️ รอยืนยัน</span>
-                            <p class="candle-desc">ตลาดลังเล Open=Close รอแท่งถัดไป</p>
-                        </div>
-                        
-                        <div class="candle-item">
-                            <div class="candle-visual">
-                                <svg viewBox="0 0 70 100">
-                                    <rect x="5" y="30" width="22" height="50" fill="#ff5252" rx="2"/>
-                                    <rect x="32" y="12" width="28" height="68" fill="#00e676" rx="2"/>
-                                </svg>
-                            </div>
-                            <div class="candle-name">Bullish Engulfing</div>
-                            <div class="candle-name-th">กลืนกินขาขึ้น</div>
-                            <span class="candle-signal bullish">🟢 BUY</span>
-                            <p class="candle-desc">แท่งเขียวกลืนแท่งแดงก่อนหน้า = กลับตัวขึ้นแรง</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- (calculator sections moved to after chart) -->
 
@@ -1323,7 +929,7 @@ function updateActiveNav(activeId) {
 
 // Auto-update active nav on scroll
 window.addEventListener('scroll', function() {
-    const sections = ['aiOutlookWidget', 'charts', 'analysis', 'tips', 'patterns', 'calculator'];
+    const sections = ['aiOutlookWidget', 'tips', 'calculator'];
     const navHeight = document.getElementById('navbar') ? document.getElementById('navbar').offsetHeight : 60;
     
     let current = '';
