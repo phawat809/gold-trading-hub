@@ -422,3 +422,31 @@
         .modal-actions{display:flex;gap:12px;justify-content:center}
         .modal-actions .btn{width:auto;padding:14px 28px}
         @media(max-width:768px){.container{padding:15px}.header{padding:25px 15px}.logo-icon{width:48px;height:48px;font-size:24px}.logo-text{font-size:22px}.tabs{gap:6px}.tab{padding:12px 16px;font-size:13px}.card{padding:24px}.cta{padding:36px 24px}.cta-btn{padding:16px 32px;font-size:16px}.qr-wrap img{width:140px;height:140px}.lock-box{padding:28px}.lock-features{grid-template-columns:1fr}.unlock-input-wrap{flex-direction:column}.user-badge{top:10px;right:10px;padding:10px 14px;font-size:12px}.lock-tabs{flex-direction:column}.pattern-grid{grid-template-columns:1fr}.candle-grid{grid-template-columns:repeat(2,1fr)}.journal-header{flex-direction:column;text-align:center}.journal-user{flex-direction:column}.journal-stats{grid-template-columns:repeat(2,1fr)}}
+
+        /* ============ PATTERN LIBRARY V2 ============ */
+        .pattern-grid-v2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-top:24px}
+        .pattern-card-v2{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+        .pattern-card-v2:hover{border-color:var(--gold2);transform:translateY(-4px);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+        .pattern-card-v2.buy{border-left:4px solid var(--green)}
+        .pattern-card-v2.sell{border-left:4px solid var(--red)}
+        .pattern-image-wrap{position:relative;height:240px;background:var(--bg2);overflow:hidden}
+        .pattern-image{position:absolute;inset:0;background-color:var(--bg2);background-size:cover;background-position:center;pointer-events:none;-webkit-user-drag:none;display:flex;align-items:center;justify-content:center}
+        .pattern-image-placeholder{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--dim);font-size:13px;text-align:center;padding:20px;background:rgba(8,8,12,0.6);border-radius:12px;backdrop-filter:blur(2px)}
+        .pattern-direction{position:absolute;top:14px;right:14px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.5px;backdrop-filter:blur(8px)}
+        .pattern-direction.buy{background:rgba(0,230,118,0.85);color:#000}
+        .pattern-direction.sell{background:rgba(255,82,82,0.85);color:#fff}
+        .pattern-number{position:absolute;top:14px;left:14px;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+        .pattern-body{padding:20px;display:flex;flex-direction:column;gap:12px}
+        .pattern-title{font-size:18px;font-weight:800;color:var(--white);margin:0}
+        .pattern-subtitle{font-size:13px;color:var(--gold);font-weight:600}
+        .pattern-meta{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--gray);padding-bottom:12px;border-bottom:1px solid var(--border)}
+        .pattern-meta-item strong{color:var(--white)}
+        .pattern-rules{display:flex;flex-direction:column;gap:8px}
+        .pattern-rule{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;background:var(--bg2);border-radius:10px;font-size:13px;border-left:3px solid var(--blue)}
+        .pattern-rule.sl{border-left-color:var(--red)}
+        .pattern-rule.tp{border-left-color:var(--green)}
+        .rule-label{color:var(--gray);font-weight:600;flex-shrink:0}
+        .rule-value{color:var(--white);text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.5}
+        .pattern-note{padding:10px 12px;background:var(--gold-dim);border:1px dashed var(--gold);border-radius:10px;font-size:12px;color:var(--gray);line-height:1.6;margin-top:4px}
+        .pattern-disclaimer{margin-top:32px;padding:16px 20px;background:var(--bg2);border:1px dashed var(--border);border-radius:12px;font-size:12px;color:var(--gray);line-height:1.7;text-align:center}
+        .pattern-disclaimer strong{color:var(--gold)}

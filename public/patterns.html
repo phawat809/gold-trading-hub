@@ -16,17 +16,28 @@
     <div class="container">
         <header class="header">
             <h1>📈 <span class="gold">Pattern การเทรด</span></h1>
-            <p class="subtitle">ภาพจำที่ใช้ในการเทรด Day Trade ทองคำ — เจอภาพ เข้าตามกฎ</p>
+            <p class="subtitle">ภาพจำสำหรับ Day Trade ทองคำ — เจอภาพ เข้าตามกฎ ไม่ถือข้ามวัน</p>
         </header>
 
-        <div class="widget-card" style="padding:60px 40px;text-align:center">
-            <div style="font-size:64px;margin-bottom:16px">🚧</div>
-            <h2 style="font-size:24px;font-weight:800;margin-bottom:12px">เร็วๆ นี้</h2>
-            <p style="color:var(--gray);font-size:16px;line-height:1.7;max-width:500px;margin:0 auto">
-                กำลังเตรียมภาพจำ 3 รูปแบบ × Buy/Sell = 6 รูป<br>
-                แต่ละรูปจะมี: ชื่อ, timeframe, เงื่อนไขเข้า, SL, TP<br>
-                <span style="color:var(--gold);font-weight:600">รอติดตาม</span>
-            </p>
+        <div class="widget-card" style="padding:20px 24px;margin-bottom:24px;background:linear-gradient(135deg,rgba(255,215,0,0.08),var(--card));border:1px solid var(--gold)">
+            <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap">
+                <span style="font-size:32px">💡</span>
+                <div style="flex:1;min-width:240px">
+                    <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:6px">วิธีใช้ Pattern Library</div>
+                    <div style="font-size:13px;color:var(--gray);line-height:1.7">
+                        แต่ละ Pattern จะมี <strong style="color:var(--white)">ภาพ + เงื่อนไขเข้าออเดอร์ + SL/TP</strong> ชัดเจน — เมื่อเจอภาพตรงกัน ให้เข้าตามกฎ ไม่ใช้ความรู้สึก<br>
+                        จากนั้นบันทึกผลที่ <a href="/journal" style="color:var(--gold);text-decoration:none;font-weight:600">📓 Trading Journal</a> เพื่อสรุปสถิติที่ <a href="/track-record" style="color:var(--gold);text-decoration:none;font-weight:600">🏆 Track Record</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pattern-grid-v2" id="patternGrid">
+            <!-- patterns.js renders here after auth -->
+        </div>
+
+        <div class="pattern-disclaimer">
+            <strong>⚠️ ภาพและเงื่อนไขเหล่านี้เป็นทรัพย์สินทางปัญญา</strong> — ทุกภาพมีลายน้ำ (Watermark) เลขบัญชี IB ของคุณ ห้ามคัดลอก เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาต
         </div>
 
         <footer class="footer">© 2026 Gold Trading Hub</footer>
@@ -35,5 +46,7 @@
 
 <script src="/js/auth.js"></script>
 <script src="/js/navbar.js"></script>
+<script src="/js/patterns-data.js"></script>
+<script src="/js/patterns.js"></script>
 </body>
 </html>
