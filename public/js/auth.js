@@ -7,6 +7,32 @@
     let currentRecordId = null;
     let sessionCheckTimer = null;
 
+    // ---------- Broker config ----------
+    const BROKERS = {
+        exness: {
+            id: 'exness',
+            name: 'Exness',
+            icon: '🥇',
+            signupLink: 'https://one.exnessonelink.com/a/u124g348',
+            signupBtnText: '🚀 สมัคร Exness เลย',
+            mainSiteLink: 'https://www.exness.com/th/',
+            mainSiteBtnText: '💬 เปิด Exness',
+            ibCode: 'u124g348',
+            existingChatHint: 'เปิด <strong>Live Chat</strong> ของ Exness แล้วพิมพ์ <code>ติดต่อเจ้าหน้าที่</code>',
+        },
+        xm: {
+            id: 'xm',
+            name: 'XM',
+            icon: '🏆',
+            signupLink: 'https://affs.click/9etGL',
+            signupBtnText: '🚀 สมัคร XM เลย',
+            mainSiteLink: 'https://www.xm.com/th/',
+            mainSiteBtnText: '💬 เปิด XM',
+            ibCode: '9etGL',
+            existingChatHint: 'ติดต่อ <strong>Live Chat</strong> ของ XM แจ้งย้าย IB',
+        },
+    };
+
     // ---------- Lock screen + Kicked modal HTML templates ----------
     const LOCK_SCREEN_HTML = `
 <div class="lock-screen" id="lockScreen">
@@ -26,42 +52,51 @@
             <div class="lock-tabs">
                 <button class="lock-tab active" data-lock-tab="new">🆕 สมัครใหม่</button>
                 <button class="lock-tab" data-lock-tab="existing">👤 มีบัญชีแล้ว</button>
+                <button class="lock-tab" data-lock-tab="login">🔑 เข้าสู่ระบบ</button>
             </div>
+
+            <!-- TAB: สมัครใหม่ -->
             <div class="lock-tab-content active" id="tab-new">
-                <div class="lock-steps">
-                    <div class="lock-steps-title">📋 วิธีปลดล็อค (สมัครใหม่)</div>
-                    <div class="step"><div class="step-num">1</div><div class="step-text">กดปุ่ม <strong>"สมัคร Exness"</strong> ด้านล่าง</div></div>
-                    <div class="step"><div class="step-num">2</div><div class="step-text">สมัครบัญชี Exness ให้เสร็จ แล้ว <strong>ส่ง UID</strong> มาทาง Line</div></div>
-                    <div class="step"><div class="step-num">3</div><div class="step-text">รับ <strong>รหัสปลดล็อค</strong> แล้วกลับมาใส่ที่นี่</div></div>
+                <div class="broker-pills" data-broker-group="new">
+                    <button class="broker-pill active" data-broker="exness">🥇 Exness</button>
+                    <button class="broker-pill" data-broker="xm">🏆 XM</button>
                 </div>
-                <a href="https://one.exnessonelink.com/a/u124g348" target="_blank" class="lock-btn">🚀 สมัคร Exness เลย</a>
+                <div class="broker-content" id="broker-content-new">
+                    <!-- rendered by JS -->
+                </div>
             </div>
+
+            <!-- TAB: มีบัญชีแล้ว (ย้าย IB) -->
             <div class="lock-tab-content" id="tab-existing">
-                <div class="lock-steps">
-                    <div class="lock-steps-title blue">📋 วิธีย้าย IB (มีบัญชีอยู่แล้ว)</div>
-                    <div class="step"><div class="step-num blue">1</div><div class="step-text">เปิด <strong>Live Chat</strong> ของ Exness</div></div>
-                    <div class="step"><div class="step-num blue">2</div><div class="step-text">พิมพ์ว่า <code>ติดต่อเจ้าหน้าที่</code></div></div>
-                    <div class="step"><div class="step-num blue">3</div><div class="step-text">แจ้งว่า <strong>"ต้องการย้าย IB"</strong> และให้รหัส IB ด้านล่าง</div></div>
+                <div class="broker-pills" data-broker-group="existing">
+                    <button class="broker-pill active" data-broker="exness">🥇 Exness</button>
+                    <button class="broker-pill" data-broker="xm">🏆 XM</button>
                 </div>
-                <div class="ib-code-box"><div class="ib-code-label">รหัส IB</div><div class="ib-code">u124g348</div></div>
-                <a href="https://www.exness.com/th/" target="_blank" class="lock-btn blue">💬 เปิด Exness</a>
-            </div>
-            <div class="divider">มีบัญชีแล้ว? เข้าสู่ระบบ</div>
-            <div class="unlock-section" style="border:none;padding-top:0">
-                <p class="unlock-title">🔑 เข้าสู่ระบบด้วย Exness Account</p>
-                <div class="unlock-input-wrap">
-                    <div class="unlock-input-group">
-                        <label class="unlock-input-label">Exness Account</label>
-                        <input type="text" class="unlock-input" id="loginUsername" placeholder="เลขบัญชี Exness" maxlength="30">
-                    </div>
-                    <div class="unlock-input-group">
-                        <label class="unlock-input-label">Password</label>
-                        <input type="password" class="unlock-input" id="loginPassword" placeholder="รหัสผ่าน" maxlength="50">
-                    </div>
-                    <button class="unlock-btn" id="loginBtn" style="width:100%;padding:16px;font-size:16px;border-radius:12px;margin-top:4px">เข้าสู่ระบบ</button>
+                <div class="broker-content" id="broker-content-existing">
+                    <!-- rendered by JS -->
                 </div>
-                <p class="unlock-error" id="unlockError">❌ ข้อมูลไม่ถูกต้องหรือบัญชียังไม่ได้รับอนุมัติ</p>
             </div>
+
+            <!-- TAB: เข้าสู่ระบบ -->
+            <div class="lock-tab-content" id="tab-login">
+                <div class="unlock-section" style="border:none;padding-top:0">
+                    <p class="unlock-title">🔑 เข้าสู่ระบบ</p>
+                    <p style="font-size:12px;color:var(--gray);margin-bottom:14px;text-align:center">รองรับทั้งบัญชี Exness และ XM</p>
+                    <div class="unlock-input-wrap">
+                        <div class="unlock-input-group">
+                            <label class="unlock-input-label">เลขบัญชี (Exness / XM)</label>
+                            <input type="text" class="unlock-input" id="loginUsername" placeholder="เลขบัญชี" maxlength="30">
+                        </div>
+                        <div class="unlock-input-group">
+                            <label class="unlock-input-label">Password</label>
+                            <input type="password" class="unlock-input" id="loginPassword" placeholder="รหัสผ่าน" maxlength="50">
+                        </div>
+                        <button class="unlock-btn" id="loginBtn" style="width:100%;padding:16px;font-size:16px;border-radius:12px;margin-top:4px">เข้าสู่ระบบ</button>
+                    </div>
+                    <p class="unlock-error" id="unlockError">❌ ข้อมูลไม่ถูกต้องหรือบัญชียังไม่ได้รับอนุมัติ</p>
+                </div>
+            </div>
+
             <div class="contact-info">📱 ติดต่อขอรหัส: <a href="https://lin.ee/n1rfIs5" target="_blank">Line: @735kzotg</a></div>
         </div>
     </div>
@@ -81,16 +116,68 @@
 </div>
 `;
 
+    function renderBrokerNewContent(brokerId) {
+        const b = BROKERS[brokerId];
+        return ''
+            + '<div class="lock-steps">'
+            +   '<div class="lock-steps-title">📋 วิธีปลดล็อค (สมัคร ' + b.name + ' ใหม่)</div>'
+            +   '<div class="step"><div class="step-num">1</div><div class="step-text">กดปุ่ม <strong>"สมัคร ' + b.name + '"</strong> ด้านล่าง</div></div>'
+            +   '<div class="step"><div class="step-num">2</div><div class="step-text">สมัครบัญชี ' + b.name + ' ให้เสร็จ แล้ว <strong>ส่ง UID</strong> มาทาง Line</div></div>'
+            +   '<div class="step"><div class="step-num">3</div><div class="step-text">รับ <strong>รหัสปลดล็อค</strong> แล้วกลับมาที่หน้า "เข้าสู่ระบบ"</div></div>'
+            + '</div>'
+            + '<a href="' + b.signupLink + '" target="_blank" class="lock-btn">' + b.signupBtnText + '</a>';
+    }
+
+    function renderBrokerExistingContent(brokerId) {
+        const b = BROKERS[brokerId];
+        return ''
+            + '<div class="lock-steps">'
+            +   '<div class="lock-steps-title blue">📋 วิธีย้าย IB ไป ' + b.name + '</div>'
+            +   '<div class="step"><div class="step-num blue">1</div><div class="step-text">' + b.existingChatHint + '</div></div>'
+            +   '<div class="step"><div class="step-num blue">2</div><div class="step-text">แจ้งว่า <strong>"ต้องการย้าย IB"</strong> และให้รหัส IB ด้านล่าง</div></div>'
+            +   '<div class="step"><div class="step-num blue">3</div><div class="step-text">รอ ' + b.name + ' confirm แล้ว <strong>ส่ง UID</strong> มาทาง Line</div></div>'
+            + '</div>'
+            + '<div class="ib-code-box"><div class="ib-code-label">รหัส IB ' + b.name + '</div><div class="ib-code">' + b.ibCode + '</div></div>'
+            + '<a href="' + b.mainSiteLink + '" target="_blank" class="lock-btn blue">' + b.mainSiteBtnText + '</a>';
+    }
+
+    function updateBrokerContent(group, brokerId) {
+        const mount = document.getElementById('broker-content-' + group);
+        if (!mount) return;
+        if (group === 'new') mount.innerHTML = renderBrokerNewContent(brokerId);
+        else if (group === 'existing') mount.innerHTML = renderBrokerExistingContent(brokerId);
+    }
+
+    function setBroker(group, brokerId) {
+        document.querySelectorAll('.broker-pills[data-broker-group="' + group + '"] .broker-pill').forEach(function(p) {
+            p.classList.toggle('active', p.dataset.broker === brokerId);
+        });
+        updateBrokerContent(group, brokerId);
+    }
+
     // ---------- Render shared chrome ----------
     function renderChrome() {
         document.body.insertAdjacentHTML('afterbegin', KICKED_MODAL_HTML + LOCK_SCREEN_HTML);
 
-        // Wire up lock screen handlers
+        // Initial broker content (default Exness for both groups)
+        updateBrokerContent('new', 'exness');
+        updateBrokerContent('existing', 'exness');
+
+        // Wire up tab handlers
         document.querySelectorAll('.lock-tab').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 showLockTab(btn.dataset.lockTab);
             });
         });
+
+        // Wire up broker pill handlers
+        document.querySelectorAll('.broker-pill').forEach(function(p) {
+            p.addEventListener('click', function() {
+                const group = p.closest('.broker-pills').dataset.brokerGroup;
+                setBroker(group, p.dataset.broker);
+            });
+        });
+
         document.getElementById('loginBtn').addEventListener('click', tryUnlock);
         document.getElementById('loginUsername').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') document.getElementById('loginPassword').focus();
